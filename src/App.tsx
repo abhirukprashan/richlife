@@ -564,7 +564,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f2e8] text-[#13306b]">
+    <div className="min-h-screen bg-[#eef4ff] text-[#13306b]">
       <Snowfall />
       {toast && (
         <div
@@ -683,7 +683,7 @@ export default function App() {
         #RichLifeChristmas ✦
       </div>
 
-      <header className="border-b border-[#13306b]/15 bg-[#f7f2e8]/95 px-4 backdrop-blur sm:px-5">
+      <header className="border-b border-[#13306b]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
         <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-center sm:h-[80px]">
           <a className="group" href="#" aria-label="Rich Life home">
             <img
@@ -711,7 +711,7 @@ export default function App() {
           <WaveDivider color="#1f4596" />
           <div className="snowfall pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[1440px]">
-            <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
+            <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#13306b]/10 bg-white/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
               <div className="order-1">
                 <div
                   className={`cheese-box relative mx-auto w-full overflow-hidden rounded-[22px] transition sm:rounded-[30px] ${
@@ -739,7 +739,7 @@ export default function App() {
                   <div className="absolute right-4 top-4 z-30 sm:right-7 sm:top-7">
                     {boxItems.length > 0 && (
                       <button
-                        className="whitespace-nowrap rounded-full bg-[#f7f2e8]/90 px-4 py-2 text-xs font-bold shadow-sm backdrop-blur transition hover:bg-white"
+                        className="whitespace-nowrap rounded-full bg-white/90 px-4 py-2 text-xs font-bold shadow-sm backdrop-blur transition hover:bg-white"
                         onClick={() => setBoxItems([])}
                       >
                         Clear box
@@ -832,7 +832,7 @@ export default function App() {
                 >
                   {products.map((product, index) => (
                     <article
-                      className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#13306b]/12 bg-[#fffaf1] p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
+                      className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#13306b]/12 bg-white p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
                         ghostProduct?.id === product.id ? "is-lifted" : ""
                       }`}
                       key={product.id}
@@ -878,7 +878,7 @@ export default function App() {
                         ) : (
                           <button
                             aria-label={`Add ${product.name} to box`}
-                            className="absolute bottom-2 right-2 grid h-10 w-10 place-items-center rounded-full bg-[#f7f2e8] shadow-sm transition hover:scale-105 hover:bg-white"
+                            className="absolute bottom-2 right-2 grid h-10 w-10 place-items-center rounded-full bg-white shadow-sm transition hover:scale-105 hover:bg-white"
                             onClick={() => addProduct(product)}
                           >
                             <Icon name="plus" size={18} />
@@ -921,7 +921,7 @@ export default function App() {
           id="premade"
           className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
-          <WaveDivider color="#f7f2e8" />
+          <WaveDivider color="#eef4ff" />
           <div aria-hidden="true" className="twinkle-stars" />
           <StringLights count={32} variant="edge" />
           <div className="relative mx-auto max-w-[1440px]">
@@ -981,7 +981,7 @@ export default function App() {
                           </span>
                         </span>
                       </div>
-                      <span className="absolute left-4 top-4 z-20 rounded-full bg-[#f7f2e8] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
+                      <span className="absolute left-4 top-4 z-20 rounded-full bg-white px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
                         {box.badge}
                       </span>
                       <button

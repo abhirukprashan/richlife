@@ -12,7 +12,7 @@
 
   body {
     min-width: 320px;
-    background: #f7f2e8;
+    background: #eef4ff;
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
@@ -36,11 +36,11 @@
   background-size: 34px 100%;
 }
 
+/* Builder section: same pale blue-white as the story timeline. */
 .festive-hero {
   background:
-    radial-gradient(circle at 8% 12%, rgb(217 180 90 / 0.18), transparent 22%),
-    radial-gradient(circle at 92% 3%, rgb(42 91 192 / 0.1), transparent 24%),
-    #f7f2e8;
+    radial-gradient(circle at 85% 10%, rgb(143 195 255 / 0.35), transparent 40%),
+    #eef4ff;
 }
 
 .snowfall {
