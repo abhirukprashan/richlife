@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react"
+import Snowfall from "./Snowfall"
 
 type Category = "All" | "Cheese" | "Crackers" | "Pairings"
 
@@ -169,14 +170,15 @@ const buildWhatsAppUrl = (order: Order) => {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
-// Ready-made boxes are shown with their actual contents, packed into the
-// same wooden box as the builder. Bundle prices sit below the item total.
+// Ready-made boxes are photographed with their actual contents (composites
+// in public/gift-boxes). Bundle prices sit below the item total.
 const premadeBoxes = [
   {
     name: "The Colombo Christmas",
     detail: "3 Rich Life cheeses · 2 crackers · woodapple jam · Serves 4",
     price: 3450,
     productIds: [1, 3, 4, 6, 7, 9],
+    image: "/gift-boxes/colombo-christmas.webp",
     badge: "Bestseller",
   },
   {
@@ -184,6 +186,7 @@ const premadeBoxes = [
     detail: "All 5 Rich Life cheeses · 3 crackers · 2 pairings · Serves 8",
     price: 5650,
     productIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    image: "/gift-boxes/hill-country-feast.webp",
     badge: "Family size",
   },
   {
@@ -191,6 +194,7 @@ const premadeBoxes = [
     detail: "2 Rich Life cheeses · cream crackers · chutney · Serves 2",
     price: 2090,
     productIds: [1, 2, 6, 10],
+    image: "/gift-boxes/little-festive-board.webp",
     badge: "For two",
   },
 ]
@@ -554,6 +558,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f7f2e8] text-[#13306b]">
+      <Snowfall />
       {toast && (
         <div
           aria-live="polite"
@@ -658,36 +663,30 @@ export default function App() {
       )}
 
       <div className="festive-bar truncate px-4 py-2 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-white sm:text-xs sm:tracking-[0.18em]">
-        {daysToChristmas} days to Christmas
+        ✦ {daysToChristmas} days to Christmas
         <span className="hidden sm:inline"> · Say cheese with Rich Life</span> ·
-        #RichLifeChristmas
+        #RichLifeChristmas ✦
       </div>
 
       <header className="border-b border-[#13306b]/15 bg-[#f7f2e8]/95 px-4 backdrop-blur sm:px-5">
-        <div className="mx-auto grid h-[68px] max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center sm:h-[80px]">
-          <nav className="hidden text-[13px] font-semibold md:block">
-            <a className="transition hover:opacity-55" href="#builder">
-              Build a box
-            </a>
-          </nav>
-          <a
-            className="group col-start-2"
-            href="#"
-            aria-label="Rich Life home"
-          >
+        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-center sm:h-[80px]">
+          <a className="group" href="#" aria-label="Rich Life home">
             <img
               alt="Rich Life"
               className="h-11 w-auto transition group-hover:scale-[1.03] sm:h-[52px]"
               src="/richlife-logo.svg"
             />
           </a>
-          <nav className="hidden justify-self-end text-[13px] font-semibold md:block">
-            <a className="transition hover:opacity-55" href="#premade">
-              Ready-made
-            </a>
-          </nav>
         </div>
       </header>
+      <div aria-hidden="true" className="string-lights">
+        {Array.from({ length: 28 }, (_, index) => (
+          <span
+            key={index}
+            style={{ "--i": index } as CSSProperties}
+          />
+        ))}
+      </div>
 
       <main>
         <section
@@ -696,10 +695,10 @@ export default function App() {
         >
           <div className="snowfall pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[1440px]">
-            <div className="builder-frame flex flex-col rounded-[28px] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
+            <div className="builder-frame mx-auto flex flex-col rounded-[28px] sm:max-w-[calc(min(1100px,calc((100vh-170px)*1.5))+2.5rem)] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
               <div className="order-1">
                 <div
-                  className={`cheese-box relative min-h-[410px] overflow-hidden rounded-[22px] transition sm:min-h-[500px] sm:rounded-[30px] ${
+                  className={`cheese-box relative mx-auto min-h-[410px] w-full overflow-hidden rounded-[22px] transition sm:aspect-[3/2] sm:min-h-0 sm:max-w-[min(1100px,calc((100vh-170px)*1.5))] sm:rounded-[30px] ${
                     isDraggingOver ? "ring-4 ring-[#2a5bc0]/55" : ""
                   }`}
                   onPointerDown={(event) => {
@@ -711,7 +710,7 @@ export default function App() {
                   <img
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover"
-                    src="https://images.unsplash.com/photo-1640095109426-b0a083fb7144?auto=format&fit=crop&w=1400&q=88"
+                    src="/box-backdrop.webp"
                   />
                   <div className="absolute inset-0 bg-[#17221b]/5" />
 
@@ -751,7 +750,7 @@ export default function App() {
                       >
                         <img
                           alt={`${product.brand} ${product.name}`}
-                          className="product-cutout"
+                          className="product-cutout pop-in"
                           draggable={false}
                           src={product.image}
                         />
@@ -784,7 +783,9 @@ export default function App() {
                     </div>
                   )}
 
-                  <div className="absolute bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#13306b]/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-md backdrop-blur">
+                  <div
+                    className="count-bounce absolute bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#13306b]/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-md backdrop-blur"
+                    key={boxItems.length}>
                     {isDraggingOver
                       ? "Drop it in the box"
                       : `${boxItems.length} ${
@@ -916,9 +917,10 @@ export default function App() {
           id="premade"
           className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
-          <div className="mx-auto max-w-[1440px]">
+          <div aria-hidden="true" className="twinkle-stars" />
+          <div className="relative mx-auto max-w-[1440px]">
             <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-12">
-              <h2 className="font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
+              <h2 className="joy-heading font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
                 Ready to gift.
               </h2>
               <p className="max-w-md text-sm leading-6 text-white/70 sm:text-base sm:leading-7">
@@ -937,55 +939,29 @@ export default function App() {
                   key={box.name}
                 >
                   <div className="gift-box-scene relative aspect-[1.2] overflow-hidden rounded-[22px] sm:rounded-[26px]">
-                    <div
-                      aria-label={`${box.name}: ${box.productIds
+                    <img
+                      alt={`${box.name}: ${box.productIds
                         .map((id) => {
                           const product = products.find((p) => p.id === id)!
                           return `${product.brand} ${product.name}`
                         })
-                        .join(", ")}`}
-                      className="gift-box-photo absolute inset-0 transition duration-700 group-hover:scale-105"
-                      role="img"
-                    >
-                      <div className="blue-box">
-                        <img
-                          alt=""
-                          className="blue-box-logo"
-                          src="/richlife-logo.svg"
-                        />
-                      </div>
-                      <div
-                        className={`gift-contents ${
-                          box.productIds.length > 6 ? "is-full" : ""
-                        }`}
-                      >
-                        {box.productIds.map((id, index) => (
-                          <img
-                            alt=""
-                            key={id}
-                            src={products.find((p) => p.id === id)!.image}
-                            style={
-                              {
-                                "--r": `${[-7, 5, -3, 6, -5, 4, -6, 3, -4, 7][index]}deg`,
-                              } as CSSProperties
-                            }
-                          />
-                        ))}
-                      </div>
-                    </div>
+                        .join(", ")} packed in a gift box`}
+                      className="gift-box-photo h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      loading="lazy"
+                      src={box.image}
+                    />
                     <div className="gift-box-shine pointer-events-none absolute inset-0" />
-                    <div
-                      className="gift-lid pointer-events-none"
-                      aria-hidden="true"
-                    >
-                      <div className="gift-lid-top">
-                        <span className="gift-ribbon-vertical" />
-                        <span className="gift-ribbon-horizontal" />
-                        <span className="gift-bow gift-bow-left" />
-                        <span className="gift-bow gift-bow-right" />
-                        <span className="gift-bow-knot" />
-                      </div>
-                      <div className="gift-lid-edge" />
+                    <div aria-hidden="true" className="gift-wrap">
+                      <span className="gift-wrap-panel gift-wrap-left" />
+                      <span className="gift-wrap-panel gift-wrap-right" />
+                      <span className="gift-wrap-bow">
+                        <span className="gift-wrap-loop gift-wrap-loop-left" />
+                        <span className="gift-wrap-loop gift-wrap-loop-right" />
+                        <span className="gift-wrap-knot" />
+                        <span className="gift-wrap-tag">
+                          <img alt="" src="/richlife-logo.svg" />
+                        </span>
+                      </span>
                     </div>
                     <span className="absolute left-4 top-4 z-20 rounded-full bg-[#f7f2e8] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
                       {box.badge}
