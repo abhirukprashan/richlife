@@ -190,13 +190,13 @@ const premadeBoxes = [
 ]
 
 // A twinkling string of Christmas lights. `variant` places it under the
-// header or along the top edge of a section.
+// header, over the top of the hero, or along the top edge of a dark section.
 function StringLights({
   count = 28,
   variant = "header",
 }: {
   count?: number
-  variant?: "header" | "edge"
+  variant?: "header" | "hero" | "edge"
 }) {
   return (
     <div
@@ -684,22 +684,54 @@ export default function App() {
       </div>
 
       <header className="border-b border-[#13306b]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
-        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-center sm:h-[80px]">
-          <a className="group" href="#" aria-label="Rich Life home">
+        <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between gap-3 sm:h-16">
+          <a className="group shrink-0" href="#" aria-label="Rich Life home">
             <img
               alt="Rich Life"
-              className="h-11 w-auto transition group-hover:scale-[1.03] sm:h-[52px]"
+              className="h-9 w-auto transition group-hover:scale-[1.03] sm:h-11"
               height={79}
               src="/richlife-logo.svg"
               width={196}
             />
           </a>
+
+          <nav
+            aria-label="Main"
+            className="no-scrollbar -mr-1 flex min-w-0 items-center gap-0.5 overflow-x-auto text-[11px] font-bold uppercase tracking-[0.08em] text-[#13306b]/70 sm:gap-1 sm:text-xs"
+          >
+            <a
+              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:block sm:px-3"
+              href="#story"
+            >
+              Story
+            </a>
+            <a
+              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:block sm:px-3"
+              href="#ideas"
+            >
+              Ideas
+            </a>
+            <a
+              className="shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:px-3"
+              href="#premade"
+            >
+              Gift boxes
+            </a>
+            <a
+              className="ml-0.5 shrink-0 rounded-full bg-[#13306b] px-3 py-2 text-white transition hover:bg-[#2a5bc0] sm:ml-1 sm:px-4"
+              href="#builder"
+            >
+              Build a box
+            </a>
+          </nav>
         </div>
       </header>
-      <StringLights />
 
       <main>
-        <Hero />
+        <div className="relative">
+          <Hero />
+          <StringLights variant="hero" />
+        </div>
 
         <Story />
 
