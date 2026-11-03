@@ -657,7 +657,6 @@
 
 @media (max-width: 640px) {
   .cheese-box {
-    min-height: 410px;
     box-shadow: 0 18px 45px rgb(64 45 24 / 0.14);
   }
 
@@ -792,81 +791,6 @@
 
 /* ---------- Joyful touches ---------- */
 
-.string-lights {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  height: 26px;
-  justify-content: space-between;
-  overflow: hidden;
-  margin-top: -1px;
-  padding: 0 12px;
-  background: radial-gradient(ellipse 60% 14px at 50% -6px, rgb(19 48 107 / 0.18), transparent);
-}
-
-.string-lights::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 14px;
-  border-bottom: 1.5px solid rgb(19 48 107 / 0.35);
-  border-radius: 0 0 50% 50% / 0 0 100% 100%;
-  content: '';
-}
-
-.string-lights span {
-  --bulb: #2a5bc0;
-  position: relative;
-  top: calc(8px + (var(--i) % 2) * 4px);
-  width: 9px;
-  height: 13px;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: var(--bulb);
-  box-shadow: 0 0 10px 2px var(--bulb);
-  animation: twinkle 1.6s ease-in-out infinite;
-  animation-delay: calc(var(--i) * -0.23s);
-}
-
-.string-lights span::before {
-  position: absolute;
-  top: -4px;
-  left: 2px;
-  width: 5px;
-  height: 5px;
-  border-radius: 1px;
-  background: #5b6b84;
-  content: '';
-}
-
-.string-lights span:nth-child(4n + 2) {
-  --bulb: #e8c15a;
-}
-
-.string-lights span:nth-child(4n + 3) {
-  --bulb: #2ea86a;
-}
-
-.string-lights span:nth-child(4n + 4) {
-  --bulb: #8fc3ff;
-}
-
-@keyframes twinkle {
-  0%,
-  100% {
-    opacity: 1;
-    filter: brightness(1.15);
-  }
-  50% {
-    opacity: 0.45;
-    filter: brightness(0.8);
-    box-shadow: 0 0 2px 0 var(--bulb);
-  }
-}
-
-@media (max-width: 640px) {
-  .string-lights span:nth-child(n + 15) {
-    display: none;
-  }
-}
 
 .pop-in {
   animation: pop-in 520ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
@@ -983,5 +907,198 @@
   50% {
     opacity: 1;
     transform: translateY(-50%) scale(1.2) rotate(45deg);
+  }
+}
+
+/* ---------- Box and products in one view ---------- */
+
+/* Phones: box height adapts so tabs and a strip of cards fit above the
+   WhatsApp bar without scrolling. */
+.cheese-box {
+  height: clamp(240px, calc(100svh - 550px), 420px);
+}
+
+.product-row .product-card-info {
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 8px;
+}
+
+@media (min-width: 641px) {
+  .cheese-box {
+    height: auto;
+    aspect-ratio: 3 / 2;
+    max-width: min(1100px, calc((100svh - 170px) * 1.5));
+  }
+
+  .builder-frame {
+    max-width: calc(min(1100px, calc((100svh - 170px) * 1.5)) + 2.5rem);
+  }
+
+  .product-row .product-card-info {
+    flex-direction: row;
+    gap: 12px;
+    padding-top: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .builder-hint {
+    display: none;
+  }
+}
+
+/* Wide screens: box on the left, a scrolling product list on the right,
+   both sized to the screen height. */
+@media (min-width: 1100px) {
+  .builder-frame {
+    --box-w: min(calc(100vw - 560px), calc((100svh - 220px) * 1.5), 1000px);
+    display: grid;
+    width: fit-content;
+    max-width: none;
+    grid-template-columns: var(--box-w) 380px;
+    gap: 20px;
+  }
+
+  .builder-frame .cheese-box {
+    width: var(--box-w);
+    max-width: none;
+  }
+
+  .builder-products {
+    display: flex;
+    height: calc(var(--box-w) / 1.5);
+    min-height: 0;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .product-row {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    align-content: start;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    /* Room to scroll the last cards clear of the WhatsApp button. */
+    padding: 2px 6px 72px 2px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: none;
+    scrollbar-width: thin;
+  }
+
+  .product-row .product-card {
+    width: auto;
+    max-width: none;
+    padding: 8px;
+    border-radius: 18px;
+  }
+
+  .product-row .product-stage {
+    height: 110px;
+  }
+
+  .product-row .product-card-info {
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 8px;
+  }
+
+  .builder-hint {
+    margin-top: 10px;
+  }
+}
+
+/* ---------- String lights ----------
+   Each <span> is one slot: it draws its own swag of wire (::before) and a
+   bulb hanging from the lowest point of it (::after), so wire and bulbs
+   always line up whatever the width. */
+.string-lights {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  height: 34px;
+  margin-top: -1px;
+  padding: 0 8px;
+  pointer-events: none;
+  --wire: rgb(19 48 107 / 0.4);
+}
+
+.string-lights span {
+  --bulb: #2a5bc0;
+  position: relative;
+  flex: 1;
+}
+
+.string-lights span:nth-child(4n + 2) {
+  --bulb: #e8c15a;
+}
+
+.string-lights span:nth-child(4n + 3) {
+  --bulb: #2ea86a;
+}
+
+.string-lights span:nth-child(4n + 4) {
+  --bulb: #8fc3ff;
+}
+
+.string-lights span::before {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  left: -1px;
+  height: 11px;
+  border-bottom: 1.5px solid var(--wire);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  content: '';
+}
+
+.string-lights span::after {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 10px;
+  height: 15px;
+  margin-left: -5px;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background:
+    linear-gradient(#5b6b84, #5b6b84) top / 6px 4px no-repeat,
+    radial-gradient(circle at 35% 45%, rgb(255 255 255 / 0.75), transparent 45%),
+    var(--bulb);
+  box-shadow:
+    0 0 6px 1px var(--bulb),
+    0 0 16px 4px var(--bulb);
+  content: '';
+  animation: twinkle 1.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.27s);
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 3px 0 var(--bulb);
+  }
+}
+
+
+/* Along the top of dark sections (ready to gift, footer). */
+.string-lights-edge {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  left: 0;
+  margin: 0;
+  --wire: rgb(255 255 255 / 0.4);
+}
+
+/* Fewer, wider swags on phones. */
+@media (max-width: 640px) {
+  .string-lights span:nth-child(n + 15) {
+    display: none;
   }
 }

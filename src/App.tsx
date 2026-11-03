@@ -199,6 +199,24 @@ const premadeBoxes = [
   },
 ]
 
+// A twinkling string of Christmas lights. `variant` places it under the
+// header or along the top edge of a section.
+function StringLights({
+  count = 28,
+  variant = "header",
+}: {
+  count?: number
+  variant?: "header" | "edge"
+}) {
+  return (
+    <div aria-hidden="true" className={`string-lights string-lights-${variant}`}>
+      {Array.from({ length: count }, (_, index) => (
+        <span key={index} style={{ "--i": index } as CSSProperties} />
+      ))}
+    </div>
+  )
+}
+
 function Icon({
   name,
   size = 20,
@@ -679,14 +697,7 @@ export default function App() {
           </a>
         </div>
       </header>
-      <div aria-hidden="true" className="string-lights">
-        {Array.from({ length: 28 }, (_, index) => (
-          <span
-            key={index}
-            style={{ "--i": index } as CSSProperties}
-          />
-        ))}
-      </div>
+      <StringLights />
 
       <main>
         <section
@@ -695,10 +706,10 @@ export default function App() {
         >
           <div className="snowfall pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[1440px]">
-            <div className="builder-frame mx-auto flex flex-col rounded-[28px] sm:max-w-[calc(min(1100px,calc((100vh-170px)*1.5))+2.5rem)] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
+            <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
               <div className="order-1">
                 <div
-                  className={`cheese-box relative mx-auto min-h-[410px] w-full overflow-hidden rounded-[22px] transition sm:aspect-[3/2] sm:min-h-0 sm:max-w-[min(1100px,calc((100vh-170px)*1.5))] sm:rounded-[30px] ${
+                  className={`cheese-box relative mx-auto w-full overflow-hidden rounded-[22px] transition sm:rounded-[30px] ${
                     isDraggingOver ? "ring-4 ring-[#2a5bc0]/55" : ""
                   }`}
                   onPointerDown={(event) => {
@@ -795,8 +806,8 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="order-2 mt-5">
-                <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="builder-products order-2 mt-3 sm:mt-5">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-4 sm:mb-5">
                   <div className="min-w-0 max-w-full">
                     <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#2a5bc0]">
                       Choose your products
@@ -825,12 +836,12 @@ export default function App() {
                 </div>
 
                 <div
-                  className="no-scrollbar -mx-3 flex snap-x snap-mandatory scroll-px-3 gap-3 overflow-x-auto px-3 pb-3 sm:mx-0 sm:px-0"
+                  className="product-row no-scrollbar -mx-3 flex snap-x snap-mandatory scroll-px-3 gap-3 overflow-x-auto px-3 pb-3 sm:mx-0 sm:px-0"
                   ref={cardRowRef}
                 >
                   {filteredProducts.map((product) => (
                     <article
-                      className={`product-card group w-[64vw] max-w-[260px] shrink-0 snap-start rounded-[22px] border border-[#13306b]/12 bg-[#fffaf1] p-3 sm:w-[240px] ${
+                      className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#13306b]/12 bg-[#fffaf1] p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
                         ghostProduct?.id === product.id ? "is-lifted" : ""
                       }`}
                       key={product.id}
@@ -841,7 +852,7 @@ export default function App() {
                       onPointerMove={moveCardDrag}
                       onPointerUp={() => endCardDrag(true)}
                     >
-                      <div className="product-stage relative h-40 overflow-hidden rounded-[15px]">
+                      <div className="product-stage relative h-24 overflow-hidden rounded-[14px] sm:h-40 sm:rounded-[15px]">
                         <img
                           alt={`${product.brand} ${product.name}`}
                           className="product-stage-image transition duration-500 group-hover:scale-105"
@@ -849,10 +860,10 @@ export default function App() {
                           src={product.image}
                         />
                         {countInBox(product) > 0 ? (
-                          <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-[#13306b] p-1 text-white shadow-md">
+                          <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-[#13306b] p-1 text-white shadow-md">
                             <button
                               aria-label={`Remove one ${product.name} from box`}
-                              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/15 sm:h-8 sm:w-8"
+                              className="grid h-8 w-8 place-items-center rounded-full transition hover:bg-white/15"
                               onClick={() => removeOne(product)}
                             >
                               <Icon name="minus" size={16} />
@@ -865,7 +876,7 @@ export default function App() {
                             </span>
                             <button
                               aria-label={`Add another ${product.name} to box`}
-                              className="grid h-10 w-10 place-items-center rounded-full transition hover:bg-white/15 sm:h-8 sm:w-8"
+                              className="grid h-8 w-8 place-items-center rounded-full transition hover:bg-white/15"
                               onClick={() => addProduct(product)}
                             >
                               <Icon name="plus" size={16} />
@@ -874,14 +885,14 @@ export default function App() {
                         ) : (
                           <button
                             aria-label={`Add ${product.name} to box`}
-                            className="absolute bottom-2 right-2 grid h-12 w-12 place-items-center rounded-full bg-[#f7f2e8] shadow-sm transition hover:scale-105 hover:bg-white sm:h-10 sm:w-10"
+                            className="absolute bottom-2 right-2 grid h-10 w-10 place-items-center rounded-full bg-[#f7f2e8] shadow-sm transition hover:scale-105 hover:bg-white"
                             onClick={() => addProduct(product)}
                           >
                             <Icon name="plus" size={18} />
                           </button>
                         )}
                       </div>
-                      <div className="flex items-start justify-between gap-3 px-1 pb-1 pt-4">
+                      <div className="product-card-info flex items-start justify-between gap-3 px-1 pb-1 pt-4">
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#2a5bc0]">
                             {product.brand}
@@ -900,12 +911,12 @@ export default function App() {
                     </article>
                   ))}
                 </div>
-                <p className="mt-2 text-center text-[11px] font-bold uppercase tracking-[0.17em] text-[#13306b]/40">
+                <p className="builder-hint mt-2 text-center text-[11px] font-bold uppercase tracking-[0.17em] text-[#13306b]/40">
                   <span className="md:hidden">
                     Tap + or hold &amp; drag into the box
                   </span>
                   <span className="hidden md:inline">
-                    Drag your favourites up into the live box
+                    Drag your favourites into the box
                   </span>
                 </p>
               </div>
@@ -918,6 +929,7 @@ export default function App() {
           className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
           <div aria-hidden="true" className="twinkle-stars" />
+          <StringLights count={32} variant="edge" />
           <div className="relative mx-auto max-w-[1440px]">
             <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-12">
               <h2 className="joy-heading font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
@@ -999,6 +1011,7 @@ export default function App() {
       </main>
 
       <footer className="site-footer relative overflow-hidden px-5 pb-32 pt-16 text-white sm:pb-10 sm:pt-20">
+        <StringLights count={32} variant="edge" />
         <div className="relative mx-auto max-w-[1440px]">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <div className="col-span-2 max-w-sm md:col-span-1">
