@@ -2,13 +2,10 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react"
 import Snowfall from "./Snowfall"
-
-type Category = "All" | "Cheese" | "Crackers" | "Pairings"
 
 type Product = {
   id: number
@@ -16,7 +13,6 @@ type Product = {
   brand: string
   note: string
   price: number
-  category: Exclude<Category, "All">
   image: string
   // Footprint inside the live box, relative to a standard slot.
   scale?: number
@@ -29,7 +25,6 @@ const products: Product[] = [
     brand: "Rich Life",
     note: "8 portions · 120g",
     price: 560,
-    category: "Cheese",
     image: "/products/richlife-cheese-wedges.webp",
     scale: 1.15,
   },
@@ -38,8 +33,7 @@ const products: Product[] = [
     name: "Processed Cheese",
     brand: "Rich Life",
     note: "Classic block · 100g",
-    price: 490,
-    category: "Cheese",
+    price: 520,
     image: "/products/richlife-processed-cheese.webp",
   },
   {
@@ -48,7 +42,6 @@ const products: Product[] = [
     brand: "Rich Life",
     note: "Melts beautifully · 200g",
     price: 900,
-    category: "Cheese",
     image: "/products/richlife-swiss-cooking-cheese.webp",
     scale: 1.1,
   },
@@ -57,8 +50,7 @@ const products: Product[] = [
     name: "Cheese Spread",
     brand: "Rich Life",
     note: "Creamy jar · 175g",
-    price: 750,
-    category: "Cheese",
+    price: 880,
     image: "/products/richlife-cheese-spread.webp",
     scale: 0.9,
   },
@@ -68,127 +60,52 @@ const products: Product[] = [
     brand: "Rich Life",
     note: "Fresh & mild · 200g",
     price: 880,
-    category: "Cheese",
     image: "/products/richlife-paneer.webp",
   },
   {
-    id: 6,
-    name: "Super Cream Cracker",
-    brand: "Munchee",
-    note: "Light & crisp · 490g",
-    price: 420,
-    category: "Crackers",
-    image: "/products/munchee-super-cream-cracker.webp",
-    scale: 1.1,
+    id: 18,
+    name: "Cheese Slices",
+    brand: "Rich Life",
+    note: "10 slices · 200g",
+    price: 1110,
+    image: "/products/richlife-cheese-slices.webp",
+    scale: 1.05,
   },
   {
-    id: 7,
-    name: "Real Bran Cracker",
-    brand: "Maliban",
-    note: "Wholesome bran · 140g",
-    price: 260,
-    category: "Crackers",
-    image: "/products/maliban-real-bran-cracker.webp",
+    id: 19,
+    name: "Cheddar Cheese",
+    brand: "Rich Life",
+    note: "Processed cheddar · 200g",
+    price: 1250,
+    image: "/products/richlife-cheddar-cheese.webp",
     scale: 1.15,
   },
   {
-    id: 8,
-    name: "Cheesebits",
-    brand: "Maliban",
-    note: "Tangy cheese crackers · 170g",
-    price: 320,
-    category: "Crackers",
-    image: "/products/maliban-cheesebits.webp",
-  },
-  {
-    id: 9,
-    name: "Woodapple Jam",
-    brand: "MD",
-    note: "Sri Lankan classic · 300g",
-    price: 650,
-    category: "Pairings",
-    image: "/products/md-woodapple-jam.webp",
-    scale: 0.95,
-  },
-  {
-    id: 10,
-    name: "Date & Lime Chutney",
-    brand: "MD",
-    note: "Sweet & tangy · 450g",
-    price: 720,
-    category: "Pairings",
-    image: "/products/md-date-lime-chutney.webp",
-    scale: 0.95,
-  },
-  {
-    id: 11,
-    name: "Smart Cream Cracker",
-    brand: "Maliban",
-    note: "Light & flaky · 125g",
-    price: 180,
-    category: "Crackers",
-    image: "/products/maliban-smart-cream-cracker.webp",
+    id: 20,
+    name: "Onion Cheese Wedges",
+    brand: "Rich Life",
+    note: "8 portions · 120g",
+    price: 600,
+    image: "/products/richlife-cheese-wedges-onion.webp",
     scale: 1.1,
   },
   {
-    id: 12,
-    name: "Kithul Treacle",
-    brand: "MD",
-    note: "Drizzle over cheese · 350ml",
-    price: 950,
-    category: "Pairings",
-    image: "/products/md-kithul-treacle.webp",
-    scale: 0.95,
+    id: 21,
+    name: "Pepper Cheese Wedges",
+    brand: "Rich Life",
+    note: "8 portions · 120g",
+    price: 600,
+    image: "/products/richlife-cheese-wedges-pepper.webp",
+    scale: 1.1,
   },
   {
-    id: 13,
-    name: "Amberella Chutney",
-    brand: "MD",
-    note: "Tangy & spiced · 460g",
-    price: 690,
-    category: "Pairings",
-    image: "/products/md-amberella-chutney.webp",
-    scale: 0.95,
-  },
-  {
-    id: 14,
-    name: "Mango Jam",
-    brand: "MD",
-    note: "Ripe Sri Lankan mango · 485g",
-    price: 620,
-    category: "Pairings",
-    image: "/products/md-mango-jam.webp",
-    scale: 0.95,
-  },
-  {
-    id: 15,
-    name: "Passion Fruit Jam",
-    brand: "MD",
-    note: "Bright & tart · 485g",
-    price: 640,
-    category: "Pairings",
-    image: "/products/md-passion-fruit-jam.webp",
-    scale: 0.95,
-  },
-  {
-    id: 16,
-    name: "Ginger Preserve",
-    brand: "MD",
-    note: "Warm & sweet · 450g",
-    price: 720,
-    category: "Pairings",
-    image: "/products/md-ginger-preserve.webp",
-    scale: 0.95,
-  },
-  {
-    id: 17,
-    name: "Pineapple Jam",
-    brand: "MD",
-    note: "Sunny & sweet · 375g",
-    price: 560,
-    category: "Pairings",
-    image: "/products/md-pineapple-jam.webp",
-    scale: 0.95,
+    id: 22,
+    name: "Green Chilli Cheese Wedges",
+    brand: "Rich Life",
+    note: "8 portions · 120g",
+    price: 600,
+    image: "/products/richlife-cheese-wedges-green-chilli.webp",
+    scale: 1.1,
   },
 ]
 
@@ -210,8 +127,7 @@ const PACKING_MS = 3000
 type Order = { products: Product[]; title?: string; price?: number }
 
 const orderTotal = (order: Order) =>
-  order.price ??
-  order.products.reduce((sum, product) => sum + product.price, 0)
+  order.price ?? order.products.reduce((sum, product) => sum + product.price, 0)
 
 const buildWhatsAppUrl = (order: Order) => {
   const items = order.products
@@ -240,31 +156,31 @@ const buildWhatsAppUrl = (order: Order) => {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
 
-// Ready-made boxes are photographed with their actual contents (composites
-// in public/gift-boxes). Bundle prices sit below the item total.
+// Ready-made boxes are curated Rich Life cheese selections. Bundle prices sit
+// below the item total.
 const premadeBoxes = [
   {
     name: "The Colombo Christmas",
-    detail: "3 Rich Life cheeses · 2 crackers · woodapple jam · Serves 4",
-    price: 3450,
-    productIds: [1, 3, 4, 6, 7, 9],
     image: "/gift-boxes/colombo-christmas.webp",
+    detail: "4 Rich Life cheeses · Serves 4",
+    price: 3450,
+    productIds: [1, 3, 4, 19],
     badge: "Bestseller",
   },
   {
     name: "Hill Country Feast",
-    detail: "All 5 Rich Life cheeses · 3 crackers · 2 pairings · Serves 8",
-    price: 5650,
-    productIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     image: "/gift-boxes/hill-country-feast.webp",
+    detail: "All 10 Rich Life cheeses · Serves 8",
+    price: 5650,
+    productIds: [1, 2, 3, 4, 5, 18, 19, 20, 21, 22],
     badge: "Family size",
   },
   {
     name: "The Little Festive Board",
-    detail: "2 Rich Life cheeses · cream crackers · chutney · Serves 2",
-    price: 2090,
-    productIds: [1, 2, 6, 10],
     image: "/gift-boxes/little-festive-board.webp",
+    detail: "3 Rich Life cheeses · Serves 2",
+    price: 2090,
+    productIds: [1, 2, 18],
     badge: "For two",
   },
 ]
@@ -279,7 +195,10 @@ function StringLights({
   variant?: "header" | "edge"
 }) {
   return (
-    <div aria-hidden="true" className={`string-lights string-lights-${variant}`}>
+    <div
+      aria-hidden="true"
+      className={`string-lights string-lights-${variant}`}
+    >
       {Array.from({ length: count }, (_, index) => (
         <span key={index} style={{ "--i": index } as CSSProperties} />
       ))}
@@ -361,8 +280,7 @@ const createBoxItem = (
       at?.left ??
       (compact ? 12 + column * 26 : 22 + column * 11.2) + (layer % 3) * 1.6,
     top:
-      at?.top ??
-      (compact ? 22 + row * 19 : 24 + row * 15) + (layer % 4) * 1.4,
+      at?.top ?? (compact ? 22 + row * 19 : 24 + row * 15) + (layer % 4) * 1.4,
     rotation: rotations[column],
     z: 10 + index,
   }
@@ -437,12 +355,10 @@ export default function App() {
     cards.forEach((card) => observer.observe(card))
     return () => observer.disconnect()
   }, [])
-  const [activeCategory, setActiveCategory] = useState<Category>("All")
   const [isDraggingOver, setIsDraggingOver] = useState(false)
   const [toast, setToast] = useState("")
-  const [packingPhase, setPackingPhase] = useState<
-    "idle" | "packing" | "sending"
-  >("idle")
+  const [packingPhase, setPackingPhase] =
+    useState<"idle" | "packing" | "sending">("idle")
   const [packingOrder, setPackingOrder] = useState<Order>({ products: [] })
   const boxTotal = boxProducts.reduce((sum, product) => sum + product.price, 0)
 
@@ -463,19 +379,9 @@ export default function App() {
       window.setTimeout(() => setPackingPhase("idle"), 1200)
     }, duration)
   }
-  const filteredProducts = useMemo(
-    () =>
-      activeCategory === "All"
-        ? products
-        : products.filter((product) => product.category === activeCategory),
-    [activeCategory],
-  )
   const topZ = () => Math.max(10, ...boxItems.map((item) => item.z)) + 1
 
-  const addProduct = (
-    product: Product,
-    at?: { left: number; top: number },
-  ) => {
+  const addProduct = (product: Product, at?: { left: number; top: number }) => {
     setBoxItems((items) => [
       ...items,
       { ...createBoxItem(product, items.length, at), z: topZ() },
@@ -488,9 +394,7 @@ export default function App() {
   // Removes the most recently added item of this product.
   const removeOne = (product: Product) => {
     setBoxItems((items) => {
-      const index = items
-        .map((item) => item.product.id)
-        .lastIndexOf(product.id)
+      const index = items.map((item) => item.product.id).lastIndexOf(product.id)
       return index < 0 ? items : items.filter((_, i) => i !== index)
     })
   }
@@ -707,24 +611,32 @@ export default function App() {
           <div className="relative flex flex-col items-center text-center">
             <div className="pack-scene" aria-hidden="true">
               <div className="pack-back" />
-              {packingOrder.products.slice(0, 5).map((product, index, shown) => (
-                <img
-                  alt=""
-                  className="pack-item"
-                  key={`${product.id}-${index}`}
-                  src={product.image}
-                  style={
-                    {
-                      "--x": `${(index - (shown.length - 1) / 2) * 46}px`,
-                      "--r": `${[-9, 6, -4, 8, -6][index]}deg`,
-                      "--delay": `${index * 140}ms`,
-                    } as CSSProperties
-                  }
-                />
-              ))}
+              {packingOrder.products
+                .slice(0, 5)
+                .map((product, index, shown) => (
+                  <img
+                    alt=""
+                    className="pack-item"
+                    key={`${product.id}-${index}`}
+                    src={product.image}
+                    style={
+                      {
+                        "--x": `${(index - (shown.length - 1) / 2) * 46}px`,
+                        "--r": `${[-9, 6, -4, 8, -6][index]}deg`,
+                        "--delay": `${index * 140}ms`,
+                      } as CSSProperties
+                    }
+                  />
+                ))}
               <div className="pack-front">
                 <span className="pack-ribbon-front" />
-                <img alt="" className="pack-stamp" src="/richlife-logo.svg" />
+                <img
+                  alt=""
+                  className="pack-stamp"
+                  height={79}
+                  src="/richlife-logo.svg"
+                  width={196}
+                />
               </div>
               <div className="pack-lid">
                 <span className="pack-ribbon-lid" />
@@ -762,7 +674,9 @@ export default function App() {
             <img
               alt="Rich Life"
               className="h-11 w-auto transition group-hover:scale-[1.03] sm:h-[52px]"
+              height={79}
               src="/richlife-logo.svg"
+              width={196}
             />
           </a>
         </div>
@@ -791,7 +705,13 @@ export default function App() {
                   <img
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover"
+                    decoding="async"
+                    fetchPriority="high"
+                    height={800}
+                    sizes="(min-width: 1100px) 880px, 100vw"
                     src="/box-backdrop.webp"
+                    srcSet="/box-backdrop-800.webp 800w, /box-backdrop.webp 1200w"
+                    width={1200}
                   />
                   <div className="absolute inset-0 bg-[#17221b]/5" />
 
@@ -807,48 +727,51 @@ export default function App() {
                   </div>
 
                   <div className="packed-products absolute inset-0 z-20">
-                    {boxItems.map(({ uid, product, left, top, rotation, z }) => (
-                      <div
-                        className={`packed-item group ${
-                          draggingUid === uid ? "is-arranging" : ""
-                        } ${selectedUid === uid ? "is-selected" : ""}`}
-                        key={uid}
-                        onLostPointerCapture={stopArranging}
-                        onPointerCancel={stopArranging}
-                        onPointerDown={(event) => startArranging(event, uid)}
-                        onPointerMove={moveArranging}
-                        onPointerUp={stopArranging}
-                        style={{
-                          left: `${left}%`,
-                          top: `${top}%`,
-                          transform: `rotate(${
-                            draggingUid === uid ? 0 : rotation
-                          }deg) rotateX(5deg) scale(${
-                            (product.scale ?? 1) * (draggingUid === uid ? 1.08 : 1)
-                          })`,
-                          zIndex: z,
-                        }}
-                      >
-                        <img
-                          alt={`${product.brand} ${product.name}`}
-                          className="product-cutout pop-in"
-                          draggable={false}
-                          src={product.image}
-                        />
-                        <button
-                          aria-label={`Remove ${product.name}`}
-                          className="packed-remove"
-                          onClick={() => {
-                            setBoxItems((items) =>
-                              items.filter((item) => item.uid !== uid),
-                            )
-                            setSelectedUid(null)
+                    {boxItems.map(
+                      ({ uid, product, left, top, rotation, z }) => (
+                        <div
+                          className={`packed-item group ${
+                            draggingUid === uid ? "is-arranging" : ""
+                          } ${selectedUid === uid ? "is-selected" : ""}`}
+                          key={uid}
+                          onLostPointerCapture={stopArranging}
+                          onPointerCancel={stopArranging}
+                          onPointerDown={(event) => startArranging(event, uid)}
+                          onPointerMove={moveArranging}
+                          onPointerUp={stopArranging}
+                          style={{
+                            left: `${left}%`,
+                            top: `${top}%`,
+                            transform: `rotate(${
+                              draggingUid === uid ? 0 : rotation
+                            }deg) rotateX(5deg) scale(${
+                              (product.scale ?? 1) *
+                              (draggingUid === uid ? 1.08 : 1)
+                            })`,
+                            zIndex: z,
                           }}
                         >
-                          <Icon name="x" size={13} />
-                        </button>
-                      </div>
-                    ))}
+                          <img
+                            alt={`${product.brand} ${product.name}`}
+                            className="product-cutout pop-in"
+                            draggable={false}
+                            src={product.image}
+                          />
+                          <button
+                            aria-label={`Remove ${product.name}`}
+                            className="packed-remove"
+                            onClick={() => {
+                              setBoxItems((items) =>
+                                items.filter((item) => item.uid !== uid),
+                              )
+                              setSelectedUid(null)
+                            }}
+                          >
+                            <Icon name="x" size={13} />
+                          </button>
+                        </div>
+                      ),
+                    )}
                   </div>
 
                   {boxItems.length === 0 && (
@@ -866,7 +789,8 @@ export default function App() {
 
                   <div
                     className="count-bounce absolute bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#13306b]/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-md backdrop-blur"
-                    key={boxItems.length}>
+                    key={boxItems.length}
+                  >
                     {isDraggingOver
                       ? "Drop it in the box"
                       : `${boxItems.length} ${
@@ -877,39 +801,15 @@ export default function App() {
               </div>
 
               <div className="builder-products order-2 mt-3 sm:mt-5">
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-4 sm:mb-5">
-                  <div className="min-w-0 max-w-full">
-                    <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#2a5bc0]">
-                      Choose your products
-                    </p>
-                    <div className="no-scrollbar flex max-w-full gap-1 overflow-x-auto rounded-full border border-[#13306b]/15 bg-white/25 p-1">
-                      {([
-                        "All",
-                        "Cheese",
-                        "Crackers",
-                        "Pairings",
-                      ] as Category[]).map((category) => (
-                        <button
-                          className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition ${
-                            activeCategory === category
-                              ? "bg-[#13306b] text-white"
-                              : "hover:bg-white/60"
-                          }`}
-                          key={category}
-                          onClick={() => setActiveCategory(category)}
-                        >
-                          {category}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <p className="mb-3 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#2a5bc0] sm:mb-5">
+                  Choose your cheese
+                </p>
 
                 <div
                   className="product-row no-scrollbar -mx-3 flex snap-x snap-mandatory scroll-px-3 gap-3 overflow-x-auto px-3 pb-3 sm:mx-0 sm:px-0"
                   ref={cardRowRef}
                 >
-                  {filteredProducts.map((product) => (
+                  {products.map((product, index) => (
                     <article
                       className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#13306b]/12 bg-[#fffaf1] p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
                         ghostProduct?.id === product.id ? "is-lifted" : ""
@@ -926,7 +826,9 @@ export default function App() {
                         <img
                           alt={`${product.brand} ${product.name}`}
                           className="product-stage-image transition duration-500 group-hover:scale-105"
+                          decoding="async"
                           draggable={false}
+                          loading={index < 4 ? "eager" : "lazy"}
                           src={product.image}
                         />
                         {countInBox(product) > 0 ? (
@@ -1006,75 +908,93 @@ export default function App() {
                 Ready to gift.
               </h2>
               <p className="max-w-md text-sm leading-6 text-white/70 sm:text-base sm:leading-7">
-                Rich Life cheeses paired with Sri Lankan favourites. Just choose
-                your occasion.
+                Three specially curated boxes, filled with nothing but Rich Life
+                cheese.
               </p>
             </div>
 
             <div className="grid gap-5 md:grid-cols-3">
-              {premadeBoxes.map((box) => (
-                <article
-                  className={`gift-card group ${
-                    openGifts.has(box.name) ? "is-open" : ""
-                  }`}
-                  data-box={box.name}
-                  key={box.name}
-                >
-                  <div className="gift-box-scene relative aspect-[1.2] overflow-hidden rounded-[22px] sm:rounded-[26px]">
-                    <img
-                      alt={`${box.name}: ${box.productIds
-                        .map((id) => {
-                          const product = products.find((p) => p.id === id)!
-                          return `${product.brand} ${product.name}`
-                        })
-                        .join(", ")} packed in a gift box`}
-                      className="gift-box-photo h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                      loading="lazy"
-                      src={box.image}
-                    />
-                    <div className="gift-box-shine pointer-events-none absolute inset-0" />
-                    <div aria-hidden="true" className="gift-wrap">
-                      <span className="gift-wrap-panel gift-wrap-left" />
-                      <span className="gift-wrap-panel gift-wrap-right" />
-                      <span className="gift-wrap-bow">
-                        <span className="gift-wrap-loop gift-wrap-loop-left" />
-                        <span className="gift-wrap-loop gift-wrap-loop-right" />
-                        <span className="gift-wrap-knot" />
-                        <span className="gift-wrap-tag">
-                          <img alt="" src="/richlife-logo.svg" />
+              {premadeBoxes.map((box) => {
+                const boxProducts = box.productIds.map(
+                  (id) => products.find((product) => product.id === id)!,
+                )
+
+                return (
+                  <article
+                    className={`gift-card group ${
+                      openGifts.has(box.name) ? "is-open" : ""
+                    }`}
+                    data-box={box.name}
+                    key={box.name}
+                  >
+                    <div className="gift-box-scene relative aspect-[1.2] overflow-hidden rounded-[22px] sm:rounded-[26px]">
+                      <img
+                        alt={`${box.name}: ${boxProducts
+                          .map((product) => `${product.brand} ${product.name}`)
+                          .join(", ")} packed in a gift box`}
+                        className="gift-box-photo h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        decoding="async"
+                        height={900}
+                        loading="lazy"
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        src={box.image}
+                        srcSet={`${box.image.replace(".webp", "-640.webp")} 640w, ${box.image} 1080w`}
+                        width={1080}
+                      />
+                      <div className="gift-box-shine pointer-events-none absolute inset-0" />
+                      <div aria-hidden="true" className="gift-wrap">
+                        <span className="gift-wrap-panel gift-wrap-left" />
+                        <span className="gift-wrap-panel gift-wrap-right" />
+                        <span className="gift-wrap-bow">
+                          <span className="gift-wrap-loop gift-wrap-loop-left" />
+                          <span className="gift-wrap-loop gift-wrap-loop-right" />
+                          <span className="gift-wrap-knot" />
+                          <span className="gift-wrap-tag">
+                            <img
+                              alt=""
+                              height={79}
+                              src="/richlife-logo.svg"
+                              width={196}
+                            />
+                          </span>
                         </span>
+                      </div>
+                      <span className="absolute left-4 top-4 z-20 rounded-full bg-[#f7f2e8] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
+                        {box.badge}
                       </span>
+                      <button
+                        aria-label={`Order ${box.name} on WhatsApp`}
+                        className="absolute bottom-4 right-4 z-20 grid h-12 w-12 place-items-center rounded-full bg-[#1fa855] text-white shadow-lg transition hover:scale-105 hover:bg-[#178f47]"
+                        onClick={() =>
+                          orderOnWhatsApp({
+                            products: boxProducts,
+                            title: box.name,
+                            price: box.price,
+                          })
+                        }
+                      >
+                        <Icon name="chat" size={24} />
+                      </button>
                     </div>
-                    <span className="absolute left-4 top-4 z-20 rounded-full bg-[#f7f2e8] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
-                      {box.badge}
-                    </span>
-                    <button
-                      aria-label={`Order ${box.name} on WhatsApp`}
-                      className="absolute bottom-4 right-4 z-20 grid h-12 w-12 place-items-center rounded-full bg-[#1fa855] text-white shadow-lg transition hover:scale-105 hover:bg-[#178f47]"
-                      onClick={() =>
-                        orderOnWhatsApp({
-                          products: box.productIds.map(
-                            (id) => products.find((p) => p.id === id)!,
-                          ),
-                          title: box.name,
-                          price: box.price,
-                        })
-                      }
-                    >
-                      <Icon name="chat" size={24} />
-                    </button>
-                  </div>
-                  <div className="flex items-start justify-between gap-4 px-1 pt-5">
-                    <div>
-                      <h3 className="font-display text-2xl">{box.name}</h3>
-                      <p className="mt-1 text-xs text-white/60">{box.detail}</p>
+                    <div className="flex items-start justify-between gap-4 px-1 pt-5">
+                      <div>
+                        <h3 className="font-display text-2xl">{box.name}</h3>
+                        <p className="mt-1 text-xs text-white/60">
+                          {box.detail}
+                        </p>
+                        <p className="mt-1 line-clamp-2 text-[11px] leading-5 text-white/40">
+                          {boxProducts
+                            .map((product) => product.name)
+                            .join(" · ")}
+                        </p>
+                      </div>
+                      <p className="whitespace-nowrap pt-1 text-sm font-bold">
+                        {formatPrice(box.price)}
+                      </p>
                     </div>
-                    <p className="whitespace-nowrap pt-1 text-sm font-bold">
-                      {formatPrice(box.price)}
-                    </p>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -1088,7 +1008,9 @@ export default function App() {
               <img
                 alt="Rich Life"
                 className="h-14 w-auto"
+                height={79}
                 src="/richlife-logo.svg"
+                width={196}
               />
               <p className="mt-5 text-sm leading-6 text-white/70">
                 Rich Life cheese, made with fresh milk from Sri Lankan farms.
@@ -1136,7 +1058,11 @@ export default function App() {
                 <li>Ordered and confirmed on WhatsApp</li>
                 <li>Hand-packed for the festive season</li>
                 <li>
-                  <a href="https://richlife.lk" rel="noreferrer" target="_blank">
+                  <a
+                    href="https://richlife.lk"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     richlife.lk ↗
                   </a>
                 </li>
@@ -1145,10 +1071,7 @@ export default function App() {
           </div>
 
           <div className="mt-14 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              © {new Date().getFullYear()} Rich Life. Partner brands belong to
-              their owners.
-            </p>
+            <p>© {new Date().getFullYear()} Rich Life. All rights reserved.</p>
             <p className="font-bold uppercase tracking-[0.18em] text-white/80">
               #RichLifeChristmas
             </p>
