@@ -46,7 +46,7 @@ const products: Product[] = [
     id: 3,
     name: "Swiss Cooking Cheese",
     brand: "Rich Life",
-    note: "Melts beautifully · 150g",
+    note: "Melts beautifully · 200g",
     price: 900,
     category: "Cheese",
     image: "/products/richlife-swiss-cooking-cheese.webp",
