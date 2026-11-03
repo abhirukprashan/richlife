@@ -5,8 +5,11 @@ import {
   useRef,
   useState,
 } from "react"
+import CheeseIdeas from "./CheeseIdeas"
 import Hero from "./Hero"
 import Snowfall from "./Snowfall"
+import Story from "./Story"
+import WaveDivider from "./WaveDivider"
 
 type Product = {
   id: number
@@ -389,6 +392,17 @@ export default function App() {
     ])
   }
 
+  // "Add to my box" on a cheese idea: add its cheeses and go to the box.
+  const addIdea = (productIds: number[], title: string) => {
+    for (const id of productIds) {
+      const product = products.find((item) => item.id === id)
+      if (product) addProduct(product)
+    }
+    setToast(`Added the cheese for ${title.toLowerCase()} to your box.`)
+    window.setTimeout(() => setToast(""), 2500)
+    document.getElementById("builder")?.scrollIntoView({ behavior: "smooth" })
+  }
+
   const countInBox = (product: Product) =>
     boxItems.filter((item) => item.product.id === product.id).length
 
@@ -686,10 +700,15 @@ export default function App() {
 
       <main>
         <Hero />
+
+        <Story />
+
+        <CheeseIdeas onAdd={addIdea} products={products} />
         <section
           id="builder"
-          className="festive-hero relative overflow-hidden px-4 pb-14 pt-5 sm:px-5 sm:pt-7 lg:pb-20 lg:pt-10"
+          className="festive-hero relative overflow-hidden px-4 pb-14 pt-20 sm:px-5 lg:pb-20 lg:pt-24"
         >
+          <WaveDivider color="#1f4596" />
           <div className="snowfall pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[1440px]">
             <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#13306b]/10 bg-[#fffaf1]/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
@@ -902,6 +921,7 @@ export default function App() {
           id="premade"
           className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
+          <WaveDivider color="#f7f2e8" />
           <div aria-hidden="true" className="twinkle-stars" />
           <StringLights count={32} variant="edge" />
           <div className="relative mx-auto max-w-[1440px]">

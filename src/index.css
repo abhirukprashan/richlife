@@ -1369,3 +1369,541 @@
   }
 }
 
+
+/* ---------- Section transitions ---------- */
+
+/* Wave on the top edge of a section, in the previous section's colour. */
+.wave-divider {
+  position: absolute;
+  z-index: 2;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 60px;
+  pointer-events: none;
+}
+
+/* Solid strip behind the always-filled top half of the wave: while the wave
+   slides, its soft top edge would otherwise let the section show through
+   as a faint line. */
+.wave-divider::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 29px;
+  background: var(--wave);
+  content: '';
+}
+
+.wave-divider-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.wave-divider-layer svg {
+  display: block;
+  width: 200%;
+  height: 100%;
+  animation: hero-slide 14s linear infinite;
+}
+
+.wave-divider-layer.is-back {
+  top: 10px;
+  opacity: 0.45;
+}
+
+.wave-divider-layer.is-back svg {
+  animation-duration: 20s;
+  animation-direction: reverse;
+}
+
+/* Scroll reveal: cards rise and fade in, one after another. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(34px);
+  transition:
+    opacity 700ms ease,
+    transform 800ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Our story ---------- */
+
+.story-section {
+  position: relative;
+  padding: 96px 20px 110px;
+  background:
+    radial-gradient(circle at 85% 10%, rgb(143 195 255 / 0.35), transparent 40%),
+    #eef4ff;
+  color: #13306b;
+}
+
+.story-intro {
+  max-width: 640px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.story-kicker,
+.ideas-kicker {
+  margin-bottom: 12px;
+  color: #2a5bc0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.story-title,
+.ideas-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+.story-title span {
+  color: #2a5bc0;
+  font-style: italic;
+}
+
+.story-lead,
+.ideas-lead {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.7;
+  opacity: 0.78;
+}
+
+/* Timeline: year pill, a milk-drop dot on the line, then a card. The line
+   fills left to right and the dots pop in one after another. */
+.timeline {
+  --line-y: 60px;
+  position: relative;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Revealed as a whole, so the items animate themselves instead. */
+.timeline[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+.timeline::before,
+.timeline::after {
+  position: absolute;
+  top: var(--line-y);
+  right: 12.5%;
+  left: 12.5%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 4px;
+  content: '';
+}
+
+.timeline::before {
+  background: rgb(42 91 192 / 0.15);
+}
+
+.timeline::after {
+  background: linear-gradient(90deg, #13306b, #2a5bc0, #8fc3ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1800ms cubic-bezier(0.6, 0, 0.2, 1) 250ms;
+}
+
+.timeline.is-visible::after {
+  transform: scaleX(1);
+}
+
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.timeline-year {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgb(19 48 107 / 0.1);
+  color: #2a5bc0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 500ms ease,
+    transform 500ms ease;
+  transition-delay: calc(400ms + var(--i) * 380ms);
+}
+
+/* Centred on the line: pill (34px) + gap puts its centre at --line-y. */
+.timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  margin: 15px 0 18px;
+  border: 4px solid #fff;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: #2a5bc0;
+  box-shadow: 0 4px 10px rgb(19 48 107 / 0.25);
+  transform: scale(0);
+  transition: transform 500ms cubic-bezier(0.3, 1.8, 0.5, 1);
+  transition-delay: calc(450ms + var(--i) * 380ms);
+}
+
+.timeline-dot::after {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  content: '';
+  animation: story-pulse 2.6s ease-out infinite;
+  animation-delay: calc(var(--i) * 0.5s);
+}
+
+@keyframes story-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(42 91 192 / 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 14px rgb(42 91 192 / 0);
+  }
+}
+
+.timeline-card {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  padding: 24px 20px 22px;
+  border: 1px solid rgb(42 91 192 / 0.12);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 16px 34px rgb(19 48 107 / 0.08);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms ease,
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 300ms ease;
+  transition-delay: calc(550ms + var(--i) * 380ms), calc(550ms + var(--i) * 380ms), 0ms;
+}
+
+/* Blue accent along the top of each card. */
+.timeline-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2a5bc0, #8fc3ff);
+  content: '';
+}
+
+.timeline-icon {
+  display: inline-grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: #eef4ff;
+  color: #2a5bc0;
+}
+
+.timeline-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.timeline-title {
+  margin-top: 14px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.timeline-text {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.72;
+}
+
+.timeline.is-visible .timeline-year,
+.timeline.is-visible .timeline-card {
+  opacity: 1;
+  transform: none;
+}
+
+.timeline.is-visible .timeline-dot {
+  transform: scale(1);
+}
+
+.timeline.is-visible .timeline-card:hover {
+  box-shadow: 0 22px 44px rgb(19 48 107 / 0.14);
+  transform: translateY(-4px);
+  /* No entrance stagger once shown, so hover reacts straight away. */
+  transition-delay: 0ms;
+}
+
+/* Phones and tablets: a vertical timeline with the line down the left. */
+@media (max-width: 860px) {
+  .timeline {
+    gap: 0;
+    padding-left: 40px;
+    grid-template-columns: 1fr;
+  }
+
+  .timeline::before,
+  .timeline::after {
+    top: 12px;
+    right: auto;
+    bottom: 12px;
+    left: 14px;
+    width: 4px;
+    height: auto;
+    margin: 0;
+  }
+
+  .timeline::after {
+    background: linear-gradient(180deg, #13306b, #2a5bc0, #8fc3ff);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .timeline.is-visible::after {
+    transform: scaleY(1);
+  }
+
+  .timeline-item {
+    position: relative;
+    align-items: flex-start;
+    padding-bottom: 26px;
+    text-align: left;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 6px;
+    left: -37px;
+    margin: 0;
+  }
+
+  .timeline-card {
+    margin-top: 12px;
+  }
+}
+
+.story-facts {
+  display: grid;
+  gap: 14px;
+  margin-top: 46px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.story-fact {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 22px;
+  border-radius: 20px;
+  background: linear-gradient(150deg, #2a5bc0, #13306b);
+  color: #fff;
+  text-align: center;
+}
+
+.story-fact dd {
+  font-family: var(--font-display);
+  /* Scales so longer values like "Wadduwa" fit on narrow cards. */
+  font-size: clamp(24px, 6.4vw, 34px);
+  line-height: 1;
+}
+
+.story-fact dt {
+  margin-top: 8px;
+  color: #cfe0f7;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Ways to use cheese ---------- */
+
+.ideas-section {
+  position: relative;
+  padding: 96px 20px 120px;
+  background:
+    radial-gradient(circle at 15% 0%, rgb(143 195 255 / 0.3), transparent 45%),
+    linear-gradient(180deg, #2a5bc0, #1f4596);
+  color: #fff;
+}
+
+.ideas-intro {
+  max-width: 640px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.ideas-kicker {
+  color: #cfe0f7;
+}
+
+.ideas-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 620px) {
+  .ideas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .ideas-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.idea-card {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 18px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 20px 40px rgb(5 16 60 / 0.25);
+  color: #13306b;
+}
+
+.idea-card.is-visible {
+  transition:
+    opacity 700ms ease,
+    transform 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.idea-card.is-visible:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 48px rgb(5 16 60 / 0.32);
+}
+
+.idea-stage {
+  position: relative;
+  display: grid;
+  height: 170px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 50% 85%, rgb(19 48 107 / 0.16), transparent 60%),
+    linear-gradient(160deg, #f6f9ff, #e3edff);
+}
+
+.idea-stage img {
+  position: absolute;
+  width: 48%;
+  max-height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 12px rgb(19 48 107 / 0.25));
+  transform: translateX(var(--x)) rotate(var(--r));
+  transition: transform 500ms cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.idea-card:hover .idea-stage img {
+  transform: translateX(var(--x)) translateY(-6px) rotate(calc(var(--r) * -1)) scale(1.06);
+}
+
+.idea-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #13306b;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.idea-title {
+  margin-top: 16px;
+  padding: 0 4px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.idea-text {
+  flex: 1;
+  margin-top: 8px;
+  padding: 0 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
+.idea-uses {
+  margin-top: 12px;
+  padding: 0 4px;
+  color: #2a5bc0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.idea-add {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: #13306b;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.idea-add:hover {
+  background: #2a5bc0;
+  transform: translateY(-1px);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .wave-divider-layer svg,
+  .timeline-dot::after {
+    animation: none;
+  }
+
+  .timeline::after,
+  .timeline-dot,
+  .timeline-year,
+  .timeline-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
