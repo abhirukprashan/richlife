@@ -1,6 +1,10 @@
-import type { CSSProperties, ReactNode } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react"
 import { useReveal } from "./useReveal"
 import WaveDivider from "./WaveDivider"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const icons: Record<string, ReactNode> = {
   carton: <path d="M8 3h8l2 4v14H6V7l2-4Zm-2 4h12M12 7v14" />,
@@ -48,6 +52,73 @@ const facts = [
 
 export default function Story() {
   const ref = useReveal<HTMLElement>()
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const lineRef = useRef<SVGSVGElement>(null)
+
+  // The line is drawn by scrolling: its tip stays level with a guide line a
+  // little above the middle of the screen, and each milestone reveals as the
+  // tip reaches its dot.
+  useEffect(() => {
+    const wrap = timelineRef.current
+    const line = lineRef.current
+    if (!wrap || !line) return
+
+    const items = gsap.utils.toArray<HTMLElement>(".timeline-item", wrap)
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(line, { scaleY: 1 })
+      items.forEach((item) => item.classList.add("is-visible"))
+      return
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        line,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: wrap,
+            start: "top 72%",
+            end: "bottom 72%",
+            // Locked 1:1 to scroll so the tip lands on a dot exactly when
+            // that milestone reveals.
+            scrub: true,
+          },
+        },
+      )
+
+      items.forEach((item) => {
+        ScrollTrigger.create({
+          trigger: item.querySelector(".timeline-dot") ?? item,
+          start: "top 72%",
+          onEnter: () => item.classList.add("is-visible"),
+          onLeaveBack: () => item.classList.remove("is-visible"),
+        })
+      })
+    }, wrap)
+
+    // Covers loading the page already scrolled into the timeline and any
+    // resize, where no enter/leave event has fired for the items above.
+    const syncReveals = () => {
+      const guide = window.innerHeight * 0.72
+      items.forEach((item) => {
+        const dot = item.querySelector(".timeline-dot")
+        if (dot && dot.getBoundingClientRect().top <= guide) {
+          item.classList.add("is-visible")
+        }
+      })
+    }
+
+    syncReveals()
+    ScrollTrigger.addEventListener("refresh", syncReveals)
+
+    return () => {
+      ScrollTrigger.removeEventListener("refresh", syncReveals)
+      ctx.revert()
+    }
+  }, [])
 
   return (
     <section className="story-section" id="story" ref={ref}>
@@ -67,34 +138,53 @@ export default function Story() {
           </p>
         </div>
 
-        <ol className="timeline" data-reveal>
-          {milestones.map((milestone, index) => (
-            <li
-              className="timeline-item"
-              key={milestone.title}
-              style={{ "--i": index } as CSSProperties}
-            >
-              <span className="timeline-year">{milestone.year}</span>
-              <span aria-hidden="true" className="timeline-dot" />
-              <div className="timeline-card">
-                <span aria-hidden="true" className="timeline-icon">
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.7"
-                    viewBox="0 0 24 24"
-                  >
-                    {icons[milestone.icon]}
-                  </svg>
-                </span>
-                <h3 className="timeline-title">{milestone.title}</h3>
-                <p className="timeline-text">{milestone.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="timeline-wrap" ref={timelineRef}>
+          <span aria-hidden="true" className="timeline-track" />
+          <svg
+            aria-hidden="true"
+            className="timeline-line"
+            fill="none"
+            preserveAspectRatio="none"
+            ref={lineRef}
+            viewBox="0 0 150 2844"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M75 0V1191V2423.5V2886"
+              stroke="currentColor"
+              strokeWidth="150"
+            />
+          </svg>
+
+          <ol className="timeline">
+            {milestones.map((milestone, index) => (
+              <li
+                className="timeline-item"
+                key={milestone.title}
+                style={{ "--i": index } as CSSProperties}
+              >
+                <span className="timeline-year">{milestone.year}</span>
+                <span aria-hidden="true" className="timeline-dot" />
+                <div className="timeline-card">
+                  <span aria-hidden="true" className="timeline-icon">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.7"
+                      viewBox="0 0 24 24"
+                    >
+                      {icons[milestone.icon]}
+                    </svg>
+                  </span>
+                  <h3 className="timeline-title">{milestone.title}</h3>
+                  <p className="timeline-text">{milestone.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
 
         <dl className="story-facts">
           {facts.map((fact, index) => (
