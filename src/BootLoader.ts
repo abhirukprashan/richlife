@@ -23,11 +23,11 @@ export function revealWhenReady() {
   const setLevel = (percent: number) =>
     loader.style.setProperty("--level", `${percent}%`)
 
-  // The box photo and logo are what people see first, so wait for them to
-  // be decoded too (not just downloaded).
+  // The hero cheeses, box photo and logo are what people see first, so wait
+  // for them to be decoded too (not just downloaded).
   const images = [
     ...document.querySelectorAll<HTMLImageElement>(
-      ".cheese-box > img, header img",
+      ".dairy-hero-cheese, .cheese-box > img, header img",
     ),
   ].map((image) => image.decode().catch(() => undefined))
   const tasks = [pageLoaded(), document.fonts?.ready ?? Promise.resolve(), ...images]

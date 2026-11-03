@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from "react"
+import Hero from "./Hero"
 import Snowfall from "./Snowfall"
 
 type Product = {
@@ -684,6 +685,7 @@ export default function App() {
       <StringLights />
 
       <main>
+        <Hero />
         <section
           id="builder"
           className="festive-hero relative overflow-hidden px-4 pb-14 pt-5 sm:px-5 sm:pt-7 lg:pb-20 lg:pt-10"

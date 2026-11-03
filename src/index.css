@@ -1096,3 +1096,276 @@
     display: none;
   }
 }
+
+/* ---------- Dairy hero ---------- */
+
+.dairy-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, #1aa6ea 0%, rgb(26 166 234 / 0) 70%),
+    linear-gradient(180deg, #1240b8 0%, #0b1f8f 70%);
+  color: #fff;
+}
+
+.dairy-hero-glow {
+  position: absolute;
+  top: -30%;
+  left: 20%;
+  width: 60%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(143 214 255 / 0.45), transparent 65%);
+  filter: blur(10px);
+  animation: hero-glow 9s ease-in-out infinite alternate;
+}
+
+@keyframes hero-glow {
+  to {
+    transform: translateX(18%) scale(1.15);
+  }
+}
+
+.dairy-hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 56px 20px 0;
+  justify-items: center;
+  gap: 18px;
+}
+
+@media (min-width: 900px) {
+  .dairy-hero-inner {
+    padding: 64px 48px 0;
+  }
+}
+
+.dairy-hero-copy {
+  max-width: 820px;
+  text-align: center;
+  animation: hero-rise 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.dairy-hero-kicker {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border: 1px solid rgb(255 255 255 / 0.35);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+
+.dairy-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.9rem, 6.4vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-shadow: 0 6px 30px rgb(5 16 60 / 0.35);
+}
+
+.dairy-hero-title span {
+  color: #bfe6ff;
+  font-size: 0.72em;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.dairy-hero-text {
+  max-width: 460px;
+  margin: 18px auto 0;
+  color: rgb(255 255 255 / 0.85);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Cheeses standing in the milk */
+.dairy-hero-products {
+  position: relative;
+  z-index: 3;
+  width: min(980px, 100%);
+  height: clamp(300px, 36vw, 440px);
+}
+
+.dairy-hero-cheese {
+  --k: 1;
+  position: absolute;
+  bottom: calc(var(--bottom) * var(--k) * 1px);
+  height: auto;
+  filter: drop-shadow(0 18px 18px rgb(5 16 60 / 0.35));
+  transform: rotate(var(--r));
+  animation:
+    hero-cheese-in 900ms cubic-bezier(0.2, 1.3, 0.4, 1) both,
+    hero-bob 4.2s ease-in-out infinite;
+  animation-delay: calc(0.3s + var(--delay) * 0.4), var(--delay);
+}
+
+@keyframes hero-cheese-in {
+  from {
+    opacity: 0;
+    translate: 0 60px;
+  }
+}
+
+@keyframes hero-bob {
+  0%,
+  100% {
+    transform: rotate(var(--r)) translateY(0);
+  }
+  50% {
+    transform: rotate(calc(var(--r) * -0.5)) translateY(-10px);
+  }
+}
+
+.dairy-hero-seal {
+  position: absolute;
+  z-index: 20;
+  top: 4%;
+  right: 4%;
+  display: grid;
+  width: clamp(92px, 11vw, 132px);
+  aspect-ratio: 1;
+  place-content: center;
+  border: 4px solid #e8c15a;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #2f6fd6, #0b1f8f 75%);
+  box-shadow:
+    0 0 0 4px rgb(255 255 255 / 0.85),
+    0 14px 30px rgb(5 16 60 / 0.4);
+  text-align: center;
+  animation: hero-seal 14s linear infinite;
+}
+
+.dairy-hero-seal span {
+  display: block;
+  line-height: 1.05;
+}
+
+.dairy-hero-seal-top,
+.dairy-hero-seal-bottom {
+  color: #e8c15a;
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dairy-hero-seal-main {
+  margin: 2px 0;
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.6vw, 20px);
+}
+
+@keyframes hero-seal {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+/* Rolling milk along the bottom */
+.dairy-hero-milk {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 190px;
+  pointer-events: none;
+}
+
+.dairy-hero-wave {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.dairy-hero-wave svg {
+  display: block;
+  width: 200%;
+  height: 100%;
+  animation: hero-slide var(--duration) linear infinite var(--direction);
+}
+
+@keyframes hero-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.dairy-hero-drop {
+  position: absolute;
+  z-index: 1;
+  top: 34px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: #fff;
+  box-shadow: 0 0 6px rgb(255 255 255 / 0.6);
+  opacity: 0;
+  animation: hero-drop 3.2s cubic-bezier(0.3, 0, 0.6, 1) infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes hero-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+  }
+  45% {
+    transform: translateY(var(--jump)) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.7);
+  }
+}
+
+@media (max-width: 899px) {
+  .dairy-hero-products {
+    height: 280px;
+  }
+
+  .dairy-hero-cheese {
+    --k: 0.9;
+  }
+
+
+  .dairy-hero-milk {
+    height: 140px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dairy-hero-glow,
+  .dairy-hero-wave svg,
+  .dairy-hero-drop,
+  .dairy-hero-seal,
+  .dairy-hero-cheese {
+    animation: none;
+  }
+}
+
