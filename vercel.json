@@ -10,7 +10,7 @@
       ]
     },
     {
-      "source": "/(box-backdrop.*\.webp|richlife-logo\.svg|favicon\.svg)",
+      "source": "/(box-backdrop.*\\.webp|richlife-logo\\.svg|favicon\\.svg)",
       "headers": [
         {
           "key": "Cache-Control",
