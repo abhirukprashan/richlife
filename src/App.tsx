@@ -571,7 +571,7 @@ export default function App() {
         >
           <span className="relative grid h-11 w-11 place-items-center rounded-full bg-white/15">
             <Icon name="chat" size={24} />
-            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#c41e3a] px-1 text-[11px] font-bold">
+            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#2a5bc0] px-1 text-[11px] font-bold">
               {boxItems.length}
             </span>
           </span>
@@ -700,7 +700,7 @@ export default function App() {
               <div className="order-1">
                 <div
                   className={`cheese-box relative min-h-[410px] overflow-hidden rounded-[22px] transition sm:min-h-[500px] sm:rounded-[30px] ${
-                    isDraggingOver ? "ring-4 ring-[#c41e3a]/55" : ""
+                    isDraggingOver ? "ring-4 ring-[#2a5bc0]/55" : ""
                   }`}
                   onPointerDown={(event) => {
                     if (!(event.target as HTMLElement).closest(".packed-item"))
@@ -797,7 +797,7 @@ export default function App() {
               <div className="order-2 mt-5">
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
                   <div className="min-w-0 max-w-full">
-                    <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#c41e3a]">
+                    <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#2a5bc0]">
                       Choose your products
                     </p>
                     <div className="no-scrollbar flex max-w-full gap-1 overflow-x-auto rounded-full border border-[#13306b]/15 bg-white/25 p-1">
@@ -882,7 +882,7 @@ export default function App() {
                       </div>
                       <div className="flex items-start justify-between gap-3 px-1 pb-1 pt-4">
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#c41e3a]">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#2a5bc0]">
                             {product.brand}
                           </p>
                           <h3 className="mt-0.5 text-sm font-bold">
@@ -917,15 +917,10 @@ export default function App() {
           className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
           <div className="mx-auto max-w-[1440px]">
-            <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-              <div>
-                <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em]">
-                  Christmas, wrapped
-                </p>
-                <h2 className="font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
-                  Ready to gift.
-                </h2>
-              </div>
+            <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-12">
+              <h2 className="font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
+                Ready to gift.
+              </h2>
               <p className="max-w-md text-sm leading-6 text-white/70 sm:text-base sm:leading-7">
                 Rich Life cheeses paired with Sri Lankan favourites. Just choose
                 your occasion.
@@ -1025,22 +1020,82 @@ export default function App() {
             </div>
           </div>
         </section>
+      </main>
 
-        <section
-          id="story"
-          className="festive-story bg-[#13306b] px-5 pb-28 pt-14 text-[#f7f2e8] sm:pb-14"
-        >
-          <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-8 md:flex-row md:items-center">
-            <p className="font-display max-w-2xl text-3xl leading-tight md:text-4xl">
-              A generous Sri Lankan Christmas starts with good cheese.
-            </p>
-            <div className="text-sm leading-6 text-white/65 md:text-right">
-              <p>Rich Life cheese, made with fresh local milk.</p>
-              <p>Hand-packed for the festive season.</p>
+      <footer className="site-footer relative overflow-hidden px-5 pb-32 pt-16 text-white sm:pb-10 sm:pt-20">
+        <div className="relative mx-auto max-w-[1440px]">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+            <div className="col-span-2 max-w-sm md:col-span-1">
+              <img
+                alt="Rich Life"
+                className="h-14 w-auto"
+                src="/richlife-logo.svg"
+              />
+              <p className="mt-5 text-sm leading-6 text-white/70">
+                Rich Life cheese, made with fresh milk from Sri Lankan farms.
+                Build a festive cheese board box and order it on WhatsApp in a
+                tap.
+              </p>
+              <button
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1fa855] px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#178f47] disabled:opacity-50"
+                disabled={boxItems.length === 0}
+                onClick={() => orderOnWhatsApp()}
+              >
+                <Icon name="chat" size={20} />
+                Order your box
+              </button>
+            </div>
+
+            <nav aria-label="Shop">
+              <h2 className="footer-heading">Shop</h2>
+              <ul className="footer-links">
+                <li>
+                  <a href="#builder">Build a box</a>
+                </li>
+                <li>
+                  <a href="#premade">Ready-made gift boxes</a>
+                </li>
+              </ul>
+            </nav>
+
+            <nav aria-label="Our cheeses">
+              <h2 className="footer-heading">Our cheeses</h2>
+              <ul className="footer-links">
+                {products
+                  .filter((product) => product.brand === "Rich Life")
+                  .map((product) => (
+                    <li key={product.id}>
+                      <a href="#builder">{product.name}</a>
+                    </li>
+                  ))}
+              </ul>
+            </nav>
+
+            <div className="col-span-2 md:col-span-1">
+              <h2 className="footer-heading">Christmas orders</h2>
+              <ul className="footer-links">
+                <li>Ordered and confirmed on WhatsApp</li>
+                <li>Hand-packed for the festive season</li>
+                <li>
+                  <a href="https://richlife.lk" rel="noreferrer" target="_blank">
+                    richlife.lk ↗
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-      </main>
+
+          <div className="mt-14 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-white/55 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              © {new Date().getFullYear()} Rich Life. Partner brands belong to
+              their owners.
+            </p>
+            <p className="font-bold uppercase tracking-[0.18em] text-white/80">
+              #RichLifeChristmas
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
