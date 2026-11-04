@@ -1,6 +1,9 @@
 {
   "title": "Rich Life Christmas Cheese Box",
   "description": "Build a festive box from the Rich Life cheese range, or choose a ready-made Christmas assortment.",
+  "icons": {
+    "icon": "/richlife-icon.svg?v=2"
+  },
   "robots": {
     "index": false
   },

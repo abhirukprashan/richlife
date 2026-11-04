@@ -1,24 +1,22 @@
-import gsap from "gsap"
 import {
   useLayoutEffect,
   useRef,
   type CSSProperties,
   type ReactNode,
-  type Ref,
 } from "react"
 import { useReveal } from "./useReveal"
 import WaveDivider from "./WaveDivider"
 
 // The client's line drawing, used twice over the list: a faded copy as the
-// full-length rail and a solid copy that is scaled down to the scroll
-// progress. `preserveAspectRatio="none"` lets the 150-wide stroke fill a 4px
-// column of any height.
+// full-length rail and a glossy milk copy that is revealed down to the scroll
+// progress. `preserveAspectRatio="none"` lets the 150-wide stroke fill a
+// narrow column of any height.
 function TimelineLine({
   className,
-  svgRef,
+  gradient = false,
 }: {
   className: string
-  svgRef?: Ref<SVGSVGElement>
+  gradient?: boolean
 }) {
   return (
     <svg
@@ -26,11 +24,32 @@ function TimelineLine({
       className={className}
       fill="none"
       preserveAspectRatio="none"
-      ref={svgRef}
       viewBox="0 0 150 2844"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M75 0V1191V2423.5V2886" stroke="currentColor" strokeWidth="150" />
+      {gradient && (
+        <defs>
+          <linearGradient
+            gradientUnits="userSpaceOnUse"
+            id="milk-stream"
+            x1="0"
+            x2="150"
+            y1="0"
+            y2="0"
+          >
+            <stop offset="0%" stopColor="#b9d2f1" />
+            <stop offset="20%" stopColor="#eef5ff" />
+            <stop offset="50%" stopColor="#ffffff" />
+            <stop offset="80%" stopColor="#eef5ff" />
+            <stop offset="100%" stopColor="#b9d2f1" />
+          </linearGradient>
+        </defs>
+      )}
+      <path
+        d="M75 0V1191V2423.5V2886"
+        stroke={gradient ? "url(#milk-stream)" : "currentColor"}
+        strokeWidth="150"
+      />
     </svg>
   )
 }
@@ -75,16 +94,18 @@ const milestones = [
 export default function Story() {
   const ref = useReveal<HTMLElement>()
   const timelineRef = useRef<HTMLDivElement>(null)
-  const lineRef = useRef<SVGSVGElement>(null)
+  const fillRef = useRef<HTMLDivElement>(null)
+  const tipRef = useRef<HTMLSpanElement>(null)
 
-  // The line is drawn by scrolling: its tip stays level with a guide line a
-  // little above the middle of the screen, and each milestone reveals as the
-  // tip reaches its dot. Everything is visible by default — the hidden start
+  // The line is poured by scrolling: the milk is clipped down to a guide line
+  // a little above the middle of the screen and each milestone reveals as the
+  // pour reaches its dot. Everything is visible by default — the hidden start
   // state is only applied here, so a failure to run JS can never blank it.
   useLayoutEffect(() => {
     const wrap = timelineRef.current
-    const line = lineRef.current
-    if (!wrap || !line) return
+    const fill = fillRef.current
+    const tip = tipRef.current
+    if (!wrap || !fill || !tip) return
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
@@ -105,7 +126,11 @@ export default function Story() {
         return dot ? dot.getBoundingClientRect().top <= guide : false
       })
 
-      gsap.set(line, { scaleY: progress })
+      fill.style.clipPath = `inset(0px 0px ${(1 - progress) * 100}% 0px)`
+      tip.style.transform = `translateY(${
+        8 + (box.height - 16) * progress - 1
+      }px)`
+      tip.style.opacity = progress > 0.004 ? "1" : "0"
       items.forEach((item, index) =>
         item.classList.toggle("is-visible", passed[index]),
       )
@@ -126,6 +151,9 @@ export default function Story() {
       resizeObserver.disconnect()
       window.removeEventListener("scroll", update, true)
       window.removeEventListener("resize", update)
+      fill.style.clipPath = ""
+      tip.style.transform = ""
+      tip.style.opacity = ""
       wrap.classList.remove("is-animated")
     }
   }, [])
@@ -150,12 +178,20 @@ export default function Story() {
 
         <div className="timeline-wrap" ref={timelineRef}>
           <TimelineLine className="timeline-track" />
-          <TimelineLine className="timeline-line" svgRef={lineRef} />
+
+          <div className="timeline-fill" ref={fillRef}>
+            <TimelineLine className="timeline-line" gradient />
+            <span aria-hidden="true" className="timeline-shine" />
+          </div>
+
+          <span aria-hidden="true" className="timeline-tip" ref={tipRef} />
 
           <ol className="timeline">
             {milestones.map((milestone, index) => (
               <li
-                className="timeline-item"
+                className={`timeline-item ${
+                  index % 2 === 0 ? "is-left" : "is-right"
+                }`}
                 key={milestone.title}
                 style={{ "--i": index } as CSSProperties}
               >

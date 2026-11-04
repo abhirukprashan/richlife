@@ -1492,55 +1492,131 @@
   opacity: 0.78;
 }
 
-/* Timeline: a vertical line, a year pill, a milk-drop dot and a card for
-   each milestone. The SVG line is scrubbed down by scrolling (GSAP) and a
-   card reveals as soon as the line reaches its dot. */
+/* Timeline: a thick stream of milk pours down the centred rail as you scroll.
+   A year pill and a card sit on alternating sides of the pour. */
 .timeline-wrap {
-  --spine: 20px;
-  --gutter: 56px;
+  --rail: 76px;
+  --spine: 16px;
+  --gutter: 46px;
   position: relative;
-  max-width: 780px;
+  max-width: 1060px;
   margin: 0 auto;
-  padding-left: var(--gutter);
 }
 
-/* Faded rail, with the same SVG drawn solid on top as the scroll progress. */
-.timeline-track,
-.timeline-line {
+/* Faint channel showing the whole path before the milk reaches it. */
+.timeline-track {
   position: absolute;
   top: 8px;
-  left: calc(var(--spine) - 2px);
+  left: calc(50% - 2px);
   width: 4px;
   height: calc(100% - 16px);
+  border-radius: 999px;
+  color: rgb(42 91 192 / 0.18);
 }
 
-.timeline-track {
-  color: rgb(42 91 192 / 0.2);
+/* The poured milk: the same drawing, clipped down to the scroll progress. */
+.timeline-fill {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: calc(50% - 11px);
+  width: 22px;
+  height: calc(100% - 16px);
+  filter: drop-shadow(0 0 4px rgb(42 91 192 / 0.4));
 }
 
 .timeline-line {
-  color: #2a5bc0;
-  transform-origin: top center;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sheens sliding down the stream so it reads as flowing milk. */
+.timeline-shine {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 58px,
+      rgb(42 91 192 / 0.08) 74px,
+      transparent 92px 160px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 100px,
+      rgb(255 255 255 / 0.5) 122px,
+      transparent 146px 220px
+    );
+  animation: milk-flow 2.4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes milk-flow {
+  to {
+    background-position:
+      0 160px,
+      0 220px;
+  }
+}
+
+/* A gently curved cap on the leading edge, matching the stream, so the pour
+   ends in a soft curve instead of a flat cut. */
+.timeline-tip {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: calc(50% - 11px);
+  width: 22px;
+  height: 10px;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  background: linear-gradient(
+    90deg,
+    #b9d2f1,
+    #eef5ff 20%,
+    #fff 50%,
+    #eef5ff 80%,
+    #b9d2f1
+  );
+  filter: drop-shadow(0 2px 3px rgb(42 91 192 / 0.3));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .timeline {
   display: grid;
-  gap: 30px;
+  gap: 44px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+/* Each item is a three-column grid: card on one side, the rail in the
+   middle, empty space on the other side. */
 .timeline-item {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: 1fr var(--rail) 1fr;
+  gap: 14px 0;
+  align-items: start;
+}
+
+.timeline-item.is-left .timeline-year,
+.timeline-item.is-left .timeline-card {
+  grid-column: 1;
+  justify-self: end;
+}
+
+.timeline-item.is-right .timeline-year,
+.timeline-item.is-right .timeline-card {
+  grid-column: 3;
+  justify-self: start;
 }
 
 .timeline-year {
   display: inline-flex;
+  grid-row: 1;
   height: 34px;
   align-items: center;
   padding: 0 16px;
@@ -1562,14 +1638,14 @@
   transform: translateY(10px);
 }
 
-/* Sits on the line, level with the middle of the year pill. */
+/* Sits on the centered line, level with the middle of the year pill. */
 .timeline-dot {
   position: absolute;
   z-index: 1;
-  top: 6px;
-  left: calc(var(--spine) - var(--gutter) - 11px);
-  width: 22px;
-  height: 22px;
+  top: 4px;
+  left: calc(50% - 13px);
+  width: 26px;
+  height: 26px;
   border: 4px solid #fff;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   background: #2a5bc0;
@@ -1602,6 +1678,7 @@
 
 .timeline-card {
   position: relative;
+  grid-row: 2;
   width: 100%;
   overflow: hidden;
   padding: 24px 20px 22px;
@@ -1674,18 +1751,41 @@
   transform: translateY(-4px);
 }
 
-/* Phones: pull the line in towards the edge. */
-@media (max-width: 640px) {
+/* Phones and narrow tablets: fall back to a single column with the line
+   pulled in towards the left edge. */
+@media (max-width: 760px) {
   .timeline-wrap {
-    --spine: 16px;
-    --gutter: 46px;
+    max-width: 780px;
+    padding-left: var(--gutter);
+  }
+
+  .timeline-track {
+    left: calc(var(--spine) - 2px);
+  }
+
+  .timeline-fill {
+    left: calc(var(--spine) - 8px);
+    width: 16px;
+  }
+
+  .timeline-tip {
+    left: calc(var(--spine) - 8px);
+    width: 16px;
+    height: 8px;
+  }
+
+  .timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
   }
 
   .timeline-dot {
-    top: 7px;
-    left: calc(var(--spine) - var(--gutter) - 10px);
-    width: 20px;
-    height: 20px;
+    top: 6px;
+    left: calc(var(--spine) - var(--gutter) - 11px);
+    width: 22px;
+    height: 22px;
   }
 
   .timeline-card {
@@ -1756,28 +1856,35 @@
 
 .idea-stage {
   position: relative;
-  display: grid;
-  height: 170px;
-  place-items: center;
+  height: 190px;
   overflow: hidden;
   border-radius: 18px;
-  background:
-    radial-gradient(ellipse at 50% 85%, rgb(19 48 107 / 0.16), transparent 60%),
-    linear-gradient(160deg, #f6f9ff, #e3edff);
+  background: linear-gradient(160deg, #f6f9ff, #e3edff);
 }
 
 .idea-stage img {
   position: absolute;
-  width: 48%;
-  max-height: 78%;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 12px rgb(19 48 107 / 0.25));
-  transform: translateX(var(--x)) rotate(var(--r));
-  transition: transform 500ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* A soft shade at the foot of the photo so the card title below reads as
+   part of the same picture. */
+.idea-stage::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 45%;
+  background: linear-gradient(transparent, rgb(5 16 60 / 0.32));
+  content: '';
+  pointer-events: none;
 }
 
 .idea-card:hover .idea-stage img {
-  transform: translateX(var(--x)) translateY(-6px) rotate(calc(var(--r) * -1)) scale(1.06);
+  transform: scale(1.05);
 }
 
 .idea-tag {
@@ -1846,13 +1953,14 @@
   }
 
   .wave-divider-layer svg,
-  .timeline-dot::after {
+  .timeline-dot::after,
+  .timeline-shine {
     animation: none;
   }
 
-  .timeline-line {
-    /* GSAP leaves the line alone here, so show it drawn in full. */
-    transform: none;
+  /* No scroll pour here, so the stream is shown in full without its cap. */
+  .timeline-tip {
+    display: none;
   }
 
   .timeline-dot,

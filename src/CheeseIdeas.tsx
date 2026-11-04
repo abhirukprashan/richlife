@@ -5,40 +5,49 @@ import WaveDivider from "./WaveDivider"
 type IdeaProduct = { id: number; name: string; image: string }
 
 // Ways to use Rich Life cheese; `productIds` match the builder's products.
+// Each card shows the finished dish rather than the packaging. Photos are
+// CC0 (Rawpixel / Wikimedia Commons): cheese board, chicken kottu, grilled
+// cheese, paneer jalfrezi, baked pasta and brie on crackers.
 const ideas = [
   {
     title: "Christmas cheese board",
     text: "Cube the cheddar, fan out the wedges and add crackers and woodapple jam. Done in ten minutes.",
+    image: "/ideas/cheese-board.webp",
     productIds: [19, 1],
     tag: "Party",
   },
   {
     title: "Cheese kottu",
     text: "Toss grated cheese through hot chicken or vegetable kottu at the very end so it melts into every bite.",
+    image: "/ideas/kottu.jpg",
     productIds: [2],
     tag: "Street food",
   },
   {
     title: "Grilled cheese toast",
     text: "Two slices between buttered bread, toasted until golden and stretchy. Perfect with evening tea.",
+    image: "/ideas/grilled-cheese.webp",
     productIds: [18],
     tag: "Tea time",
   },
   {
     title: "Devilled paneer",
     text: "Fry paneer cubes, then toss with onion, capsicum, chilli and a splash of tomato sauce.",
+    image: "/ideas/paneer.jpg",
     productIds: [5],
     tag: "Spicy",
   },
   {
     title: "Creamy pasta bake",
     text: "Swiss cooking cheese melts smoothly over baked pasta, vegetables or a Christmas gratin.",
+    image: "/ideas/pasta-bake.webp",
     productIds: [3],
     tag: "Family dinner",
   },
   {
     title: "Cracker bites",
     text: "Spread on cream crackers, top with a pepper wedge slice and a drizzle of kithul treacle.",
+    image: "/ideas/crackers.webp",
     productIds: [4, 21],
     tag: "Snack",
   },
@@ -81,21 +90,12 @@ export default function CheeseIdeas({
                 style={{ "--i": index } as CSSProperties}
               >
                 <div aria-hidden="true" className="idea-stage">
-                  {used.map((product, position) => (
-                    <img
-                      alt=""
-                      decoding="async"
-                      key={product.id}
-                      loading="lazy"
-                      src={product.image}
-                      style={
-                        {
-                          "--r": `${position % 2 ? 7 : -6}deg`,
-                          "--x": `${(position - (used.length - 1) / 2) * 34}%`,
-                        } as CSSProperties
-                      }
-                    />
-                  ))}
+                  <img
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                    src={idea.image}
+                  />
                   <span className="idea-tag">{idea.tag}</span>
                 </div>
                 <h3 className="idea-title">{idea.title}</h3>
