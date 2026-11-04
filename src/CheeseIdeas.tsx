@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react"
+import { type CSSProperties } from "react"
 import { useReveal } from "./useReveal"
 import WaveDivider from "./WaveDivider"
 
@@ -66,16 +66,34 @@ export default function CheeseIdeas({
   return (
     <section className="ideas-section" id="ideas" ref={ref}>
       <WaveDivider back="#ffffff" color="#eef4ff" />
-      <div className="mx-auto max-w-[1200px]">
-        <div className="ideas-intro" data-reveal>
-          <p className="ideas-kicker">Cheese, six ways</p>
-          <h2 className="ideas-title">Ways to enjoy Rich Life cheese</h2>
-          <p className="ideas-lead">
+      <div className="mx-auto max-w-[1200px] ideas-head">
+        <div className="ideas-intro">
+          <p
+            className="ideas-kicker"
+            data-reveal
+            style={{ "--i": 0 } as CSSProperties}
+          >
+            Cheese, six ways
+          </p>
+          <h2
+            className="ideas-title"
+            data-reveal
+            style={{ "--i": 1 } as CSSProperties}
+          >
+            Ways to enjoy Rich Life cheese
+          </h2>
+          <p
+            className="ideas-lead"
+            data-reveal
+            style={{ "--i": 2 } as CSSProperties}
+          >
             Easy ideas for the Christmas table and everyday Sri Lankan
             favourites. Add the cheese you need straight to your box.
           </p>
         </div>
+      </div>
 
+      <div className="ideas-rail">
         <div className="ideas-grid">
           {ideas.map((idea, index) => {
             const used = idea.productIds

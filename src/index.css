@@ -1156,7 +1156,42 @@
 .dairy-hero-copy {
   max-width: 820px;
   text-align: center;
-  animation: hero-rise 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* The copy waits for the milk loader to lift, then arrives line by line so
+   the headline is actually seen rather than played out behind the loader. */
+html.is-ready .dairy-hero-kicker {
+  animation: hero-rise 800ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both;
+}
+
+html.is-ready .hero-line {
+  animation: hero-line-in 950ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+html.is-ready .hero-line:nth-child(1) {
+  animation-delay: 160ms;
+}
+
+html.is-ready .hero-line:nth-child(2) {
+  animation-delay: 310ms;
+}
+
+html.is-ready .hero-line:nth-child(3) {
+  animation-delay: 460ms;
+}
+
+html.is-ready .hero-line-accent {
+  animation:
+    hero-line-in 950ms cubic-bezier(0.2, 0.8, 0.2, 1) 460ms both,
+    hero-accent-glow 5.5s ease-in-out 1.8s infinite;
+}
+
+html.is-ready .dairy-hero-text {
+  animation: hero-rise 800ms cubic-bezier(0.2, 0.8, 0.2, 1) 760ms both;
+}
+
+.hero-line {
+  display: block;
 }
 
 .dairy-hero-kicker {
@@ -1181,7 +1216,7 @@
   text-shadow: 0 6px 30px rgb(5 16 60 / 0.35);
 }
 
-.dairy-hero-title span {
+.dairy-hero-title .hero-line-accent {
   color: #bfe6ff;
   font-size: 0.72em;
   font-style: italic;
@@ -1200,6 +1235,26 @@
   from {
     opacity: 0;
     transform: translateY(24px);
+  }
+}
+
+@keyframes hero-line-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(30px) scale(0.98);
+  }
+}
+
+@keyframes hero-accent-glow {
+  0%,
+  100% {
+    text-shadow: 0 6px 30px rgb(5 16 60 / 0.35);
+  }
+  50% {
+    text-shadow:
+      0 0 26px rgb(191 230 255 / 0.6),
+      0 6px 30px rgb(5 16 60 / 0.35);
   }
 }
 
@@ -1459,6 +1514,37 @@
   max-width: 640px;
   margin: 0 auto 56px;
   text-align: center;
+}
+
+/* The intro arrives piece by piece as the section scrolls into view: the
+   kicker lifts first, the headline eases out of a soft blur, the paragraph
+   follows. */
+.story-intro [data-reveal],
+.ideas-intro [data-reveal] {
+  transform: translateY(24px);
+  transition-duration: 750ms;
+}
+
+.story-intro [data-reveal].is-visible,
+.ideas-intro [data-reveal].is-visible {
+  transform: none;
+}
+
+.story-intro .story-title[data-reveal],
+.ideas-intro .ideas-title[data-reveal] {
+  filter: blur(8px);
+  transform: translateY(24px) scale(0.98);
+  transition:
+    opacity 850ms ease,
+    transform 950ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 950ms ease;
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+.story-intro .story-title[data-reveal].is-visible,
+.ideas-intro .ideas-title[data-reveal].is-visible {
+  filter: blur(0);
+  transform: none;
 }
 
 .story-kicker,
@@ -1797,11 +1883,15 @@
 
 .ideas-section {
   position: relative;
-  padding: 96px 20px 120px;
+  padding: 96px 0 120px;
   background:
     radial-gradient(circle at 15% 0%, rgb(143 195 255 / 0.3), transparent 45%),
     linear-gradient(180deg, #2a5bc0, #1f4596);
   color: #fff;
+}
+
+/* Only the heading is inset; the card rail below runs edge to edge. */.ideas-head {
+  padding: 0 20px;
 }
 
 .ideas-intro {
@@ -1814,32 +1904,41 @@
   color: #cfe0f7;
 }
 
+/* The ideas sit in a sideways rail: swipe on touch, use the arrows (or a
+   trackpad) elsewhere. Cards snap neatly into place as they pass. */
 .ideas-grid {
-  display: grid;
+  display: flex;
   gap: 18px;
-  grid-template-columns: 1fr;
+  padding: 4px 2px 22px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-padding-left: 2px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-@media (min-width: 620px) {
-  .ideas-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 960px) {
-  .ideas-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.ideas-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .idea-card {
   display: flex;
+  flex: 0 0 clamp(270px, 78vw, 340px);
   flex-direction: column;
+  min-width: 0;
   padding: 14px 14px 18px;
   border-radius: 24px;
   background: #fff;
   box-shadow: 0 20px 40px rgb(5 16 60 / 0.25);
   color: #13306b;
+  scroll-snap-align: start;
+}
+
+/* Cards drift in from the side as the rail comes into view. */
+.ideas-grid .idea-card[data-reveal]:not(.is-visible) {
+  transform: translate(24px, 26px) scale(0.97);
 }
 
 .idea-card.is-visible {
@@ -1948,8 +2047,16 @@
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1;
+    filter: none;
     transform: none;
     transition: none;
+  }
+
+  .dairy-hero-kicker,
+  .dairy-hero-text,
+  .hero-line,
+  .hero-line-accent {
+    animation: none;
   }
 
   .wave-divider-layer svg,

@@ -162,14 +162,28 @@ export default function Story() {
     <section className="story-section" id="story" ref={ref}>
       <WaveDivider color="#ffffff" />
       <div className="mx-auto max-w-[1200px]">
-        <div className="story-intro" data-reveal>
-          <p className="story-kicker">Our story</p>
-          <h2 className="story-title">
+        <div className="story-intro">
+          <p
+            className="story-kicker"
+            data-reveal
+            style={{ "--i": 0 } as CSSProperties}
+          >
+            Our story
+          </p>
+          <h2
+            className="story-title"
+            data-reveal
+            style={{ "--i": 1 } as CSSProperties}
+          >
             Sri Lankan milk,
             <br />
             <span>since 1995.</span>
           </h2>
-          <p className="story-lead">
+          <p
+            className="story-lead"
+            data-reveal
+            style={{ "--i": 2 } as CSSProperties}
+          >
             For three decades Rich Life has turned fresh milk from Sri Lankan
             farms into dairy that families trust, from the first long-life
             milk cartons to the cheese in this year's Christmas box.

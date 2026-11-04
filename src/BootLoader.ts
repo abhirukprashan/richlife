@@ -56,6 +56,9 @@ export function revealWhenReady() {
         await wait(FILL_MS)
       }
       loader.classList.add("is-lift")
+      // Start the hero entrance as the loader lifts, not while it still covers
+      // the page.
+      document.documentElement.classList.add("is-ready")
       document.documentElement.classList.remove("is-booting")
       await wait(reduceMotion ? 400 : LIFT_MS)
       loader.remove()

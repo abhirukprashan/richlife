@@ -42,11 +42,9 @@ export default function Hero() {
         <div className="dairy-hero-copy">
           <p className="dairy-hero-kicker">Fresh from Sri Lankan farms</p>
           <h1 className="dairy-hero-title" id="hero-title">
-            Real milk.
-            <br />
-            Real cheese.
-            <br />
-            <span>Merry Christmas.</span>
+            <span className="hero-line">Real milk.</span>
+            <span className="hero-line">Real cheese.</span>
+            <span className="hero-line hero-line-accent">Merry Christmas.</span>
           </h1>
           <p className="dairy-hero-text">
             Fresh Sri Lankan milk, made into cheese for your Christmas table.
