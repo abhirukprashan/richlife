@@ -1,10 +1,39 @@
 import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react"
+import {
+  useLayoutEffect,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+  type Ref,
+} from "react"
 import { useReveal } from "./useReveal"
 import WaveDivider from "./WaveDivider"
 
-gsap.registerPlugin(ScrollTrigger)
+// The client's line drawing, used twice over the list: a faded copy as the
+// full-length rail and a solid copy that is scaled down to the scroll
+// progress. `preserveAspectRatio="none"` lets the 150-wide stroke fill a 4px
+// column of any height.
+function TimelineLine({
+  className,
+  svgRef,
+}: {
+  className: string
+  svgRef?: Ref<SVGSVGElement>
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      preserveAspectRatio="none"
+      ref={svgRef}
+      viewBox="0 0 150 2844"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M75 0V1191V2423.5V2886" stroke="currentColor" strokeWidth="150" />
+    </svg>
+  )
+}
 
 const icons: Record<string, ReactNode> = {
   carton: <path d="M8 3h8l2 4v14H6V7l2-4Zm-2 4h12M12 7v14" />,
@@ -43,13 +72,6 @@ const milestones = [
   },
 ]
 
-const facts = [
-  { value: "1995", label: "Making Sri Lankan dairy since" },
-  { value: "1st", label: "UHT dairy maker in Sri Lanka" },
-  { value: "Wadduwa", label: "Home of our Molligoda factory" },
-  { value: "ECO", label: "Label certified range" },
-]
-
 export default function Story() {
   const ref = useReveal<HTMLElement>()
   const timelineRef = useRef<HTMLDivElement>(null)
@@ -57,66 +79,54 @@ export default function Story() {
 
   // The line is drawn by scrolling: its tip stays level with a guide line a
   // little above the middle of the screen, and each milestone reveals as the
-  // tip reaches its dot.
-  useEffect(() => {
+  // tip reaches its dot. Everything is visible by default — the hidden start
+  // state is only applied here, so a failure to run JS can never blank it.
+  useLayoutEffect(() => {
     const wrap = timelineRef.current
     const line = lineRef.current
     if (!wrap || !line) return
 
-    const items = gsap.utils.toArray<HTMLElement>(".timeline-item", wrap)
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(line, { scaleY: 1 })
-      items.forEach((item) => item.classList.add("is-visible"))
-      return
-    }
+    const items = Array.from(
+      wrap.querySelectorAll<HTMLElement>(".timeline-item"),
+    )
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        line,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: wrap,
-            start: "top 72%",
-            end: "bottom 72%",
-            // Locked 1:1 to scroll so the tip lands on a dot exactly when
-            // that milestone reveals.
-            scrub: true,
-          },
-        },
-      )
+    wrap.classList.add("is-animated")
 
-      items.forEach((item) => {
-        ScrollTrigger.create({
-          trigger: item.querySelector(".timeline-dot") ?? item,
-          start: "top 72%",
-          onEnter: () => item.classList.add("is-visible"),
-          onLeaveBack: () => item.classList.remove("is-visible"),
-        })
-      })
-    }, wrap)
-
-    // Covers loading the page already scrolled into the timeline and any
-    // resize, where no enter/leave event has fired for the items above.
-    const syncReveals = () => {
+    const update = () => {
+      const box = wrap.getBoundingClientRect()
       const guide = window.innerHeight * 0.72
-      items.forEach((item) => {
+      const progress = Math.min(1, Math.max(0, (guide - box.top) / box.height))
+
+      // Read every dot before writing anything, so one layout pass is enough.
+      const passed = items.map((item) => {
         const dot = item.querySelector(".timeline-dot")
-        if (dot && dot.getBoundingClientRect().top <= guide) {
-          item.classList.add("is-visible")
-        }
+        return dot ? dot.getBoundingClientRect().top <= guide : false
       })
+
+      gsap.set(line, { scaleY: progress })
+      items.forEach((item, index) =>
+        item.classList.toggle("is-visible", passed[index]),
+      )
     }
 
-    syncReveals()
-    ScrollTrigger.addEventListener("refresh", syncReveals)
+    // Runs straight from the scroll event (browsers already fire at most once
+    // per frame) and the capture phase also catches scrolling that happens
+    // inside a wrapper such as a preview pane, not just the window.
+    update()
+    window.addEventListener("scroll", update, { capture: true, passive: true })
+    window.addEventListener("resize", update)
+
+    // Fonts and images can change the list height after mount.
+    const resizeObserver = new ResizeObserver(update)
+    resizeObserver.observe(wrap)
 
     return () => {
-      ScrollTrigger.removeEventListener("refresh", syncReveals)
-      ctx.revert()
+      resizeObserver.disconnect()
+      window.removeEventListener("scroll", update, true)
+      window.removeEventListener("resize", update)
+      wrap.classList.remove("is-animated")
     }
   }, [])
 
@@ -139,22 +149,8 @@ export default function Story() {
         </div>
 
         <div className="timeline-wrap" ref={timelineRef}>
-          <span aria-hidden="true" className="timeline-track" />
-          <svg
-            aria-hidden="true"
-            className="timeline-line"
-            fill="none"
-            preserveAspectRatio="none"
-            ref={lineRef}
-            viewBox="0 0 150 2844"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M75 0V1191V2423.5V2886"
-              stroke="currentColor"
-              strokeWidth="150"
-            />
-          </svg>
+          <TimelineLine className="timeline-track" />
+          <TimelineLine className="timeline-line" svgRef={lineRef} />
 
           <ol className="timeline">
             {milestones.map((milestone, index) => (
@@ -185,20 +181,6 @@ export default function Story() {
             ))}
           </ol>
         </div>
-
-        <dl className="story-facts">
-          {facts.map((fact, index) => (
-            <div
-              className="story-fact"
-              data-reveal
-              key={fact.label}
-              style={{ "--i": index } as CSSProperties}
-            >
-              <dt>{fact.label}</dt>
-              <dd>{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   )

@@ -1504,7 +1504,7 @@
   padding-left: var(--gutter);
 }
 
-/* Faded rail, with the SVG progress line drawn over it. */
+/* Faded rail, with the same SVG drawn solid on top as the scroll progress. */
 .timeline-track,
 .timeline-line {
   position: absolute;
@@ -1515,12 +1515,9 @@
 }
 
 .timeline-track {
-  border-radius: 999px;
-  background: rgb(42 91 192 / 0.16);
+  color: rgb(42 91 192 / 0.2);
 }
 
-/* The supplied SVG is one 150px-wide stroke; squeezed to 4px it stays
-   crisp and stretches to the height of the list. */
 .timeline-line {
   color: #2a5bc0;
   transform-origin: top center;
@@ -1553,11 +1550,16 @@
   color: #2a5bc0;
   font-family: var(--font-display);
   font-size: 20px;
-  opacity: 0;
-  transform: translateY(10px);
   transition:
     opacity 500ms ease,
     transform 500ms ease;
+}
+
+/* Hidden-from start state: only once the script has taken over, so the
+   timeline is never left blank if the animation cannot run. */
+.timeline-wrap.is-animated .timeline-year {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 /* Sits on the line, level with the middle of the year pill. */
@@ -1572,8 +1574,11 @@
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   background: #2a5bc0;
   box-shadow: 0 4px 10px rgb(19 48 107 / 0.25);
-  transform: scale(0);
   transition: transform 500ms cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+
+.timeline-wrap.is-animated .timeline-dot {
+  transform: scale(0);
 }
 
 .timeline-dot::after {
@@ -1604,12 +1609,15 @@
   border-radius: 22px;
   background: #fff;
   box-shadow: 0 16px 34px rgb(19 48 107 / 0.08);
-  opacity: 0;
-  transform: translateY(24px);
   transition:
     opacity 600ms ease,
     transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
     box-shadow 300ms ease;
+}
+
+.timeline-wrap.is-animated .timeline-card {
+  opacity: 0;
+  transform: translateY(24px);
 }
 
 /* Blue accent along the top of each card. */
@@ -1683,38 +1691,6 @@
   .timeline-card {
     padding: 20px 18px 18px;
   }
-}
-
-.story-facts {
-  display: grid;
-  gap: 14px;
-  margin-top: 46px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-.story-fact {
-  display: flex;
-  flex-direction: column-reverse;
-  padding: 22px;
-  border-radius: 20px;
-  background: linear-gradient(150deg, #2a5bc0, #13306b);
-  color: #fff;
-  text-align: center;
-}
-
-.story-fact dd {
-  font-family: var(--font-display);
-  /* Scales so longer values like "Wadduwa" fit on narrow cards. */
-  font-size: clamp(24px, 6.4vw, 34px);
-  line-height: 1;
-}
-
-.story-fact dt {
-  margin-top: 8px;
-  color: #cfe0f7;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
 }
 
 /* ---------- Ways to use cheese ---------- */

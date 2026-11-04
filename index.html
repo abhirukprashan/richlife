@@ -80,14 +80,16 @@
       #boot-loader .boot-pour {
         position: absolute;
         z-index: 1;
-        top: 0;
-        bottom: calc(var(--level) - 6px);
+        /* Starts above the screen and plunges deep into the milk, so the
+           stream covers the whole way from the top edge to the surface. */
+        top: -12px;
+        bottom: calc(var(--level) - 48px);
         left: 50%;
-        width: 16px;
-        margin-left: -8px;
-        border-radius: 0 0 8px 8px;
-        background: linear-gradient(90deg, #e6f1ff, #fff 45%, #fff 55%, #e6f1ff);
-        box-shadow: 0 0 18px rgb(255 255 255 / 0.35);
+        width: 48px;
+        margin-left: -14px;
+        border-radius: 0 0 14px 14px;
+        background: linear-gradient(90deg, #dcebff, #fff 35%, #fff 65%, #dcebff);
+        box-shadow: 0 0 24px rgb(255 255 255 / 0.45);
         transform-origin: top;
         transition:
           bottom 750ms cubic-bezier(0.3, 0.7, 0.3, 1),
@@ -145,8 +147,8 @@
       }
       @keyframes boot-pour-wobble {
         50% {
-          width: 13px;
-          margin-left: -6.5px;
+          width: 23px;
+          margin-left: -11.5px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
