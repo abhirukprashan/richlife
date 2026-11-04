@@ -62,7 +62,7 @@ export default function Snowfall() {
         context.beginPath()
         context.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2)
         context.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`
-        context.shadowColor = "rgba(42, 91, 192, 0.45)"
+        context.shadowColor = "rgba(10, 31, 143, 0.45)"
         context.shadowBlur = 4
         context.fill()
       }

@@ -9,7 +9,7 @@ const heroProducts = [
   { src: "/hero/richlife-drinking-yoghurt.webp", x: 62, w: 7, bottom: 90, r: 4, delay: 0.8 },
   { src: "/hero/richlife-chocolate-milk.webp", x: 70, w: 11, bottom: 86, r: 5, delay: 0.5 },
   { src: "/hero/richlife-vanilla-milk.webp", x: 82, w: 11, bottom: 80, r: 9, delay: 1.1 },
-  { src: "/hero/richlife-kiri-pani.webp", x: 31, w: 15, bottom: 120, r: -3, delay: 0.7 },
+  { src: "/hero/richlife-kiri-pani.webp", x: 31, w: 15, bottom: 70, r: -3, delay: 0.7 },
   { src: "/products/richlife-cheddar-cheese.webp", x: 0, w: 22, bottom: 92, r: -6, delay: 0.4 },
   { src: "/products/richlife-cheese-wedges.webp", x: 24, w: 17, bottom: 86, r: 3, delay: 0.9 },
   { src: "/products/richlife-cheese-slices.webp", x: 43, w: 16, bottom: 96, r: 5, delay: 1.3 },
@@ -40,14 +40,11 @@ export default function Hero() {
 
       <div className="dairy-hero-inner">
         <div className="dairy-hero-copy">
-          <p className="dairy-hero-kicker">Fresh from Sri Lankan farms</p>
           <h1 className="dairy-hero-title" id="hero-title">
-            <span className="hero-line">Real milk.</span>
-            <span className="hero-line">Real cheese.</span>
-            <span className="hero-line hero-line-accent">Merry Christmas.</span>
+            <span className="hero-line">Share the Rich Life</span>
           </h1>
           <p className="dairy-hero-text">
-            Fresh Sri Lankan milk, made into cheese for your Christmas table.
+          Christmas is a table, and cheese is what fills it. Every Rich Life offer is a way to share.
           </p>
         </div>
 

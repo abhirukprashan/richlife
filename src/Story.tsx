@@ -37,11 +37,11 @@ function TimelineLine({
             y1="0"
             y2="0"
           >
-            <stop offset="0%" stopColor="#b9d2f1" />
-            <stop offset="20%" stopColor="#eef5ff" />
-            <stop offset="50%" stopColor="#ffffff" />
-            <stop offset="80%" stopColor="#eef5ff" />
-            <stop offset="100%" stopColor="#b9d2f1" />
+            <stop offset="0%" stopColor="#c99a26" />
+            <stop offset="20%" stopColor="#eaba3a" />
+            <stop offset="50%" stopColor="#f7dd8f" />
+            <stop offset="80%" stopColor="#eaba3a" />
+            <stop offset="100%" stopColor="#c99a26" />
           </linearGradient>
         </defs>
       )}

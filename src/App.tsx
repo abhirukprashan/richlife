@@ -564,12 +564,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#eef4ff] text-[#13306b]">
+    <div className="min-h-screen bg-[#eef4ff] text-[#0a1f8f]">
       <Snowfall />
       {toast && (
         <div
           aria-live="polite"
-          className="fixed left-4 right-4 top-4 z-50 rounded-full bg-[#13306b] px-5 py-3 text-center text-sm font-semibold text-white shadow-xl sm:left-auto sm:right-5"
+          className="fixed left-4 right-4 top-4 z-50 rounded-full bg-[#0a1f8f] px-5 py-3 text-center text-sm font-semibold text-white shadow-xl sm:left-auto sm:right-5"
         >
           {toast}
         </div>
@@ -578,12 +578,12 @@ export default function App() {
       {boxItems.length > 0 && packingPhase === "idle" && (
         <button
           aria-label={`Order your box of ${boxItems.length} items on WhatsApp`}
-          className="whatsapp-fab fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex items-center gap-3 rounded-full bg-[#1fa855] py-2 pl-2 pr-5 text-left text-white shadow-[0_14px_30px_rgba(19,48,107,0.32)] transition hover:-translate-y-0.5 hover:bg-[#178f47] sm:inset-x-auto sm:bottom-6 sm:right-6"
+          className="whatsapp-fab fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex items-center gap-3 rounded-full bg-[#1fa855] py-2 pl-2 pr-5 text-left text-white shadow-[0_14px_30px_rgba(10,31,143,0.32)] transition hover:-translate-y-0.5 hover:bg-[#178f47] sm:inset-x-auto sm:bottom-6 sm:right-6"
           onClick={() => orderOnWhatsApp()}
         >
           <span className="relative grid h-11 w-11 place-items-center rounded-full bg-white/15">
             <Icon name="chat" size={24} />
-            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#2a5bc0] px-1 text-[11px] font-bold">
+            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#0a1f8f] px-1 text-[11px] font-bold">
               {boxItems.length}
             </span>
           </span>
@@ -668,7 +668,7 @@ export default function App() {
                 ? `Packing your ${packingOrder.title ?? "Rich Life box"}…`
                 : "Opening WhatsApp…"}
             </p>
-            <p className="mt-2 text-sm text-[#13306b]/60">
+            <p className="mt-2 text-sm text-[#0a1f8f]/60">
               {packingOrder.products.length}{" "}
               {packingOrder.products.length === 1 ? "item" : "items"} ·{" "}
               {formatPrice(orderTotal(packingOrder))}
@@ -683,7 +683,7 @@ export default function App() {
         #RichLifeChristmas ✦
       </div>
 
-      <header className="border-b border-[#13306b]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
+      <header className="border-b border-[#0a1f8f]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
         <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between gap-3 sm:h-16">
           <a className="group shrink-0" href="#" aria-label="Rich Life home">
             <img
@@ -697,28 +697,28 @@ export default function App() {
 
           <nav
             aria-label="Main"
-            className="no-scrollbar -mr-1 flex min-w-0 items-center gap-0.5 overflow-x-auto text-[11px] font-bold uppercase tracking-[0.08em] text-[#13306b]/70 sm:gap-1 sm:text-xs"
+            className="no-scrollbar -mr-1 flex min-w-0 items-center gap-0.5 overflow-x-auto text-[11px] font-bold uppercase tracking-[0.08em] text-[#0a1f8f]/70 sm:gap-1 sm:text-xs"
           >
             <a
-              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:block sm:px-3"
+              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#0a1f8f]/5 hover:text-[#0a1f8f] sm:block sm:px-3"
               href="#story"
             >
               Story
             </a>
             <a
-              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:block sm:px-3"
+              className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#0a1f8f]/5 hover:text-[#0a1f8f] sm:block sm:px-3"
               href="#ideas"
             >
               Ideas
             </a>
             <a
-              className="shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#13306b]/5 hover:text-[#13306b] sm:px-3"
+              className="shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#0a1f8f]/5 hover:text-[#0a1f8f] sm:px-3"
               href="#premade"
             >
               Gift boxes
             </a>
             <a
-              className="ml-0.5 shrink-0 rounded-full bg-[#13306b] px-3 py-2 text-white transition hover:bg-[#2a5bc0] sm:ml-1 sm:px-4"
+              className="ml-0.5 shrink-0 rounded-full bg-[#0a1f8f] px-3 py-2 text-white transition hover:bg-[#0a1f8f] sm:ml-1 sm:px-4"
               href="#builder"
             >
               Build a box
@@ -740,14 +740,14 @@ export default function App() {
           id="builder"
           className="festive-hero relative overflow-hidden px-4 pb-14 pt-20 sm:px-5 lg:pb-20 lg:pt-24"
         >
-          <WaveDivider color="#1f4596" />
+          <WaveDivider color="#0a1f8f" />
           <div className="snowfall pointer-events-none absolute inset-0" />
           <div className="relative mx-auto max-w-[1440px]">
-            <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#13306b]/10 bg-white/90 p-3 shadow-[0_24px_70px_rgba(19,48,107,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
+            <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#0a1f8f]/10 bg-white/90 p-3 shadow-[0_24px_70px_rgba(10,31,143,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
               <div className="order-1">
                 <div
                   className={`cheese-box relative mx-auto w-full overflow-hidden rounded-[22px] transition sm:rounded-[30px] ${
-                    isDraggingOver ? "ring-4 ring-[#2a5bc0]/55" : ""
+                    isDraggingOver ? "ring-4 ring-[#0a1f8f]/55" : ""
                   }`}
                   onPointerDown={(event) => {
                     if (!(event.target as HTMLElement).closest(".packed-item"))
@@ -829,7 +829,7 @@ export default function App() {
 
                   {boxItems.length === 0 && (
                     <div className="absolute inset-0 z-20 grid place-items-center">
-                      <div className="rounded-[22px] border border-white/50 bg-[#13306b]/85 px-7 py-5 text-center text-white shadow-xl backdrop-blur-sm">
+                      <div className="rounded-[22px] border border-white/50 bg-[#0a1f8f]/85 px-7 py-5 text-center text-white shadow-xl backdrop-blur-sm">
                         <span className="mx-auto mb-2 grid h-9 w-9 place-items-center rounded-full border border-dashed border-white/60">
                           <Icon name="plus" size={17} />
                         </span>
@@ -841,7 +841,7 @@ export default function App() {
                   )}
 
                   <div
-                    className="count-bounce absolute bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#13306b]/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-md backdrop-blur"
+                    className="count-bounce absolute bottom-5 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#0a1f8f]/90 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-white shadow-md backdrop-blur"
                     key={boxItems.length}
                   >
                     {isDraggingOver
@@ -854,7 +854,7 @@ export default function App() {
               </div>
 
               <div className="builder-products order-2 mt-3 sm:mt-5">
-                <p className="mb-3 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#2a5bc0] sm:mb-5">
+                <p className="mb-3 px-1 text-[10px] font-bold uppercase tracking-[0.17em] text-[#0a1f8f] sm:mb-5">
                   Choose your cheese
                 </p>
 
@@ -864,7 +864,7 @@ export default function App() {
                 >
                   {products.map((product, index) => (
                     <article
-                      className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#13306b]/12 bg-white p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
+                      className={`product-card group w-[42vw] max-w-[260px] shrink-0 snap-start rounded-[20px] border border-[#0a1f8f]/12 bg-white p-2 sm:w-[240px] sm:rounded-[22px] sm:p-3 ${
                         ghostProduct?.id === product.id ? "is-lifted" : ""
                       }`}
                       key={product.id}
@@ -885,7 +885,7 @@ export default function App() {
                           src={product.image}
                         />
                         {countInBox(product) > 0 ? (
-                          <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-[#13306b] p-1 text-white shadow-md">
+                          <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-[#0a1f8f] p-1 text-white shadow-md">
                             <button
                               aria-label={`Remove one ${product.name} from box`}
                               className="grid h-8 w-8 place-items-center rounded-full transition hover:bg-white/15"
@@ -910,7 +910,7 @@ export default function App() {
                         ) : (
                           <button
                             aria-label={`Add ${product.name} to box`}
-                            className="absolute bottom-2 right-2 grid h-10 w-10 place-items-center rounded-full bg-white shadow-sm transition hover:scale-105 hover:bg-white"
+                            className="absolute bottom-2 right-2 grid h-10 w-10 place-items-center rounded-full bg-[#0a1f8f] text-white shadow-sm transition hover:scale-105 hover:bg-[#0a1f8f]/90"
                             onClick={() => addProduct(product)}
                           >
                             <Icon name="plus" size={18} />
@@ -919,13 +919,13 @@ export default function App() {
                       </div>
                       <div className="product-card-info flex items-start justify-between gap-3 px-1 pb-1 pt-4">
                         <div>
-                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#2a5bc0]">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#0a1f8f]">
                             {product.brand}
                           </p>
                           <h3 className="mt-0.5 text-sm font-bold">
                             {product.name}
                           </h3>
-                          <p className="mt-1 text-xs text-[#13306b]/55">
+                          <p className="mt-1 text-xs text-[#0a1f8f]/55">
                             {product.note}
                           </p>
                         </div>
@@ -936,7 +936,7 @@ export default function App() {
                     </article>
                   ))}
                 </div>
-                <p className="builder-hint mt-2 text-center text-[11px] font-bold uppercase tracking-[0.17em] text-[#13306b]/40">
+                <p className="builder-hint mt-2 text-center text-[11px] font-bold uppercase tracking-[0.17em] text-[#0a1f8f]/40">
                   <span className="md:hidden">
                     Tap + or hold &amp; drag into the box
                   </span>
@@ -951,7 +951,7 @@ export default function App() {
 
         <section
           id="premade"
-          className="festive-premade relative overflow-hidden bg-[#13306b] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
+          className="festive-premade relative overflow-hidden bg-[#0a1f8f] px-4 py-16 text-[#fff8eb] sm:px-5 sm:py-20 lg:py-28"
         >
           <WaveDivider color="#eef4ff" />
           <div aria-hidden="true" className="twinkle-stars" />
@@ -1013,7 +1013,7 @@ export default function App() {
                           </span>
                         </span>
                       </div>
-                      <span className="absolute left-4 top-4 z-20 rounded-full bg-white px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#13306b]">
+                      <span className="absolute left-4 top-4 z-20 rounded-full bg-white px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#0a1f8f]">
                         {box.badge}
                       </span>
                       <button
