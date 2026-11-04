@@ -684,7 +684,7 @@ export default function App() {
       </div>
 
       <header className="border-b border-[#0a1f8f]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
-        <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between gap-3 sm:h-16">
+        <div className="mx-auto flex h-14 page-shell items-center justify-between gap-3 sm:h-16">
           <a className="group shrink-0" href="#" aria-label="Rich Life home">
             <img
               alt="Rich Life"
@@ -742,7 +742,7 @@ export default function App() {
         >
           <WaveDivider color="#0a1f8f" />
           <div className="snowfall pointer-events-none absolute inset-0" />
-          <div className="relative mx-auto max-w-[1440px]">
+          <div className="relative mx-auto page-shell">
             <div className="builder-frame mx-auto flex flex-col rounded-[28px] border border-[#0a1f8f]/10 bg-white/90 p-3 shadow-[0_24px_70px_rgba(10,31,143,0.10)] backdrop-blur-sm sm:rounded-[36px] sm:p-5">
               <div className="order-1">
                 <div
@@ -956,7 +956,7 @@ export default function App() {
           <WaveDivider color="#eef4ff" />
           <div aria-hidden="true" className="twinkle-stars" />
           <StringLights count={32} variant="edge" />
-          <div className="relative mx-auto max-w-[1440px]">
+          <div className="relative mx-auto page-shell">
             <div className="mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center sm:mb-12">
               <h2 className="joy-heading font-display text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] tracking-[-0.05em]">
                 Ready to gift.
@@ -1056,7 +1056,7 @@ export default function App() {
 
       <footer className="site-footer relative overflow-hidden px-5 pb-32 pt-16 text-white sm:pb-10 sm:pt-20">
         <StringLights count={32} variant="edge" />
-        <div className="relative mx-auto max-w-[1440px]">
+        <div className="relative mx-auto page-shell">
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
             <div className="col-span-2 max-w-sm md:col-span-1">
               <img

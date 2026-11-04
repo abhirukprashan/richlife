@@ -1583,6 +1583,12 @@ html.is-ready .dairy-hero-text {
   letter-spacing: -0.03em;
 }
 
+/* The ideas heading keeps growing on wide monitors instead of stopping at
+   the size that fits a laptop. */
+.ideas-title {
+  font-size: clamp(2.4rem, 4.6vw, 6rem);
+}
+
 .story-title span {
   color: #2a5bc0;
   font-style: italic;
@@ -1890,7 +1896,7 @@ html.is-ready .dairy-hero-text {
 
 .ideas-section {
   position: relative;
-  padding: 96px 0 120px;
+  padding: clamp(80px, 6vw, 140px) 0 clamp(96px, 7vw, 160px);
   background:
     radial-gradient(circle at 15% 0%, rgb(143 195 255 / 0.3), transparent 45%),
     linear-gradient(180deg, #2a5bc0, #1f4596);
@@ -1902,20 +1908,25 @@ html.is-ready .dairy-hero-text {
 }
 
 .ideas-intro {
-  max-width: 640px;
-  margin: 0 auto 48px;
+  max-width: clamp(640px, 46vw, 900px);
+  margin: 0 auto clamp(48px, 4vw, 72px);
   text-align: center;
 }
 
 .ideas-kicker {
   color: #cfe0f7;
+  font-size: clamp(11px, 0.8vw, 16px);
+}
+
+.ideas-lead {
+  font-size: clamp(16px, 0.95vw, 22px);
 }
 
 /* The ideas sit in a sideways rail: swipe on touch, use the arrows (or a
    trackpad) elsewhere. Cards snap neatly into place as they pass. */
 .ideas-grid {
   display: flex;
-  gap: 18px;
+  gap: clamp(18px, 1.15vw, 28px);
   padding: 4px 2px 22px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -1933,7 +1944,7 @@ html.is-ready .dairy-hero-text {
 /* A second rail sits under the first, scrolling on its own so each row is a
    browsable set rather than one very long list. */
 .ideas-rail + .ideas-rail {
-  margin-top: 10px;
+  margin-top: clamp(10px, 0.8vw, 18px);
 }
 
 .idea-card {
@@ -1941,12 +1952,21 @@ html.is-ready .dairy-hero-text {
   flex: 0 0 clamp(270px, 78vw, 340px);
   flex-direction: column;
   min-width: 0;
-  padding: 14px 14px 18px;
-  border-radius: 24px;
+  padding: clamp(14px, 0.95vw, 20px) clamp(14px, 0.95vw, 20px)
+    clamp(18px, 1.2vw, 26px);
+  border-radius: clamp(24px, 1.6vw, 32px);
   background: #fff;
   box-shadow: 0 20px 40px rgb(5 16 60 / 0.25);
   color: #13306b;
   scroll-snap-align: start;
+}
+
+/* On laptops and up the cards grow with the viewport, so a wide monitor gets
+   substantial cards rather than the same 340px phone size stretched across it. */
+@media (min-width: 900px) {
+  .idea-card {
+    flex-basis: clamp(340px, 25vw, 460px);
+  }
 }
 
 /* Cards drift in from the side as the rail comes into view. */
@@ -1968,9 +1988,9 @@ html.is-ready .dairy-hero-text {
 
 .idea-stage {
   position: relative;
-  height: 190px;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: clamp(18px, 1.2vw, 24px);
   background: linear-gradient(160deg, #f6f9ff, #e3edff);
 }
 
@@ -2003,21 +2023,21 @@ html.is-ready .dairy-hero-text {
   position: absolute;
   top: 10px;
   left: 10px;
-  padding: 6px 10px;
+  padding: clamp(6px, 0.4vw, 9px) clamp(10px, 0.6vw, 14px);
   border-radius: 999px;
   background: #13306b;
   color: #fff;
-  font-size: 10px;
+  font-size: clamp(10px, 0.55vw, 13px);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .idea-title {
-  margin-top: 16px;
+  margin-top: clamp(16px, 1vw, 22px);
   padding: 0 4px;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: clamp(24px, 1.7vw, 40px);
   line-height: 1.1;
 }
 
@@ -2025,26 +2045,26 @@ html.is-ready .dairy-hero-text {
   flex: 1;
   margin-top: 8px;
   padding: 0 4px;
-  font-size: 14px;
+  font-size: clamp(14px, 0.9vw, 20px);
   line-height: 1.6;
   opacity: 0.75;
 }
 
 .idea-uses {
-  margin-top: 12px;
+  margin-top: clamp(12px, 0.9vw, 18px);
   padding: 0 4px;
   color: #2a5bc0;
-  font-size: 12px;
+  font-size: clamp(12px, 0.75vw, 16px);
   font-weight: 700;
 }
 
 .idea-add {
-  margin-top: 14px;
-  padding: 12px 16px;
+  margin-top: clamp(14px, 1vw, 20px);
+  padding: clamp(12px, 0.8vw, 17px) clamp(16px, 1.1vw, 24px);
   border-radius: 999px;
   background: #13306b;
   color: #fff;
-  font-size: 13px;
+  font-size: clamp(13px, 0.85vw, 18px);
   font-weight: 700;
   transition:
     background 160ms ease,
@@ -2089,5 +2109,182 @@ html.is-ready .dairy-hero-text {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---------- TV and very large screens ---------- */
+
+/* A TV reports 1600–3840 CSS pixels but is watched from across the room, so
+   the shell, display type and imagery step up with the screen instead of
+   staying at laptop sizes. Laptops and normal desktops under 1600px are
+   untouched. */
+.page-shell {
+  max-width: 1440px;
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 17px;
+  }
+
+  .page-shell,
+  .dairy-hero-inner {
+    max-width: 1680px;
+  }
+
+  .dairy-hero-title {
+    font-size: clamp(6rem, 6.2vw, 9rem);
+  }
+
+  .dairy-hero-copy {
+    max-width: clamp(1040px, 60vw, 1900px);
+  }
+
+  .dairy-hero-text {
+    max-width: clamp(460px, 32vw, 720px);
+    font-size: clamp(17px, 1vw, 26px);
+  }
+
+  .dairy-hero-products {
+    height: clamp(280px, 25vw, 560px);
+  }
+
+  .dairy-hero-milk {
+    height: clamp(170px, 8.5vw, 260px);
+  }
+
+  .ideas-intro {
+    max-width: clamp(720px, 46vw, 1000px);
+  }
+
+  .ideas-title {
+    font-size: clamp(3.6rem, 4.6vw, 7rem);
+  }
+
+  .idea-card {
+    flex-basis: clamp(360px, 25vw, 520px);
+  }
+
+  .idea-title {
+    font-size: clamp(26px, 1.7vw, 44px);
+  }
+
+  .idea-text {
+    font-size: clamp(15px, 0.9vw, 21px);
+  }
+
+  .idea-uses {
+    font-size: clamp(13px, 0.75vw, 17px);
+  }
+
+  .idea-add {
+    font-size: clamp(14px, 0.85vw, 19px);
+  }
+
+  .product-card {
+    width: clamp(240px, 15vw, 360px);
+    max-width: none;
+  }
+}
+
+@media (min-width: 2000px) {
+  html {
+    font-size: 18px;
+  }
+
+  .page-shell {
+    max-width: 1900px;
+  }
+
+  .dairy-hero-inner {
+    max-width: 1900px;
+    padding-top: clamp(120px, 12svh, 300px);
+  }
+
+  .dairy-hero-title {
+    font-size: clamp(7rem, 5vw, 10rem);
+  }
+
+  .dairy-hero-copy {
+    max-width: clamp(1200px, 60vw, 1900px);
+  }
+
+  .dairy-hero-text {
+    font-size: clamp(19px, 1.1vw, 34px);
+  }
+
+  .dairy-hero-products {
+    height: clamp(430px, 27vw, 660px);
+  }
+
+  .dairy-hero-milk {
+    height: clamp(220px, 9.5vw, 360px);
+  }
+
+  .ideas-head {
+    max-width: 1700px;
+  }
+
+  .ideas-intro {
+    max-width: clamp(900px, 48vw, 1400px);
+  }
+
+  .ideas-title {
+    font-size: clamp(4.5rem, 4.6vw, 9rem);
+  }
+
+  .ideas-kicker {
+    font-size: clamp(14px, 0.8vw, 22px);
+  }
+
+  .ideas-lead {
+    font-size: clamp(19px, 1vw, 28px);
+  }
+
+  .idea-card {
+    flex-basis: clamp(420px, 25vw, 640px);
+  }
+
+  .idea-title {
+    font-size: clamp(30px, 1.7vw, 54px);
+  }
+
+  .idea-text {
+    font-size: clamp(17px, 0.9vw, 26px);
+  }
+
+  .idea-uses {
+    font-size: clamp(14px, 0.75vw, 20px);
+  }
+
+  .idea-add {
+    font-size: clamp(16px, 0.85vw, 23px);
+  }
+
+  .product-card {
+    width: clamp(300px, 9.5vw, 420px);
+    max-width: none;
+  }
+}
+
+@media (min-width: 2560px) {
+  html {
+    font-size: 20px;
+  }
+
+  .page-shell,
+  .dairy-hero-inner {
+    max-width: 2260px;
+  }
+}
+
+@media (min-width: 3200px) {
+  html {
+    font-size: 22px;
+  }
+
+  .page-shell,
+  .dairy-hero-inner {
+    max-width: 2800px;
   }
 }
