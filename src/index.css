@@ -1278,8 +1278,10 @@ html.is-ready .dairy-hero-text {
 .dairy-hero-products {
   position: relative;
   z-index: 3;
-  width: min(860px, 100%);
-  height: clamp(230px, 29vw, 300px);
+  /* Scales with the hero's content width: noticeably bigger than the old
+     860px island, but still lined up with the centred heading above it. */
+  width: 100%;
+  height: clamp(240px, 25vw, 400px);
 }
 
 .dairy-hero-cheese {
@@ -1368,7 +1370,7 @@ html.is-ready .dairy-hero-text {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 150px;
+  height: clamp(150px, 8vw, 210px);
   pointer-events: none;
 }
 
@@ -1427,7 +1429,7 @@ html.is-ready .dairy-hero-text {
 
 @media (max-width: 899px) {
   .dairy-hero-products {
-    height: 210px;
+    height: clamp(190px, 40vw, 240px);
   }
 
   .dairy-hero-cheese {
@@ -1926,6 +1928,12 @@ html.is-ready .dairy-hero-text {
 
 .ideas-grid::-webkit-scrollbar {
   display: none;
+}
+
+/* A second rail sits under the first, scrolling on its own so each row is a
+   browsable set rather than one very long list. */
+.ideas-rail + .ideas-rail {
+  margin-top: 10px;
 }
 
 .idea-card {

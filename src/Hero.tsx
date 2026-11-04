@@ -4,16 +4,16 @@ import type { CSSProperties } from "react"
 // cheeses in front (later items overlap earlier ones). `bottom` is in px
 // above the hero's lower edge, so each item sits partly under the milk.
 const heroProducts = [
-  { src: "/hero/richlife-strawberry-milk.webp", x: 4, w: 11, bottom: 82, r: -7, delay: 0.2 },
-  { src: "/hero/richlife-full-cream-milk.webp", x: 15, w: 9, bottom: 90, r: -2, delay: 0 },
-  { src: "/hero/richlife-drinking-yoghurt.webp", x: 62, w: 7, bottom: 90, r: 4, delay: 0.8 },
-  { src: "/hero/richlife-chocolate-milk.webp", x: 70, w: 11, bottom: 86, r: 5, delay: 0.5 },
-  { src: "/hero/richlife-vanilla-milk.webp", x: 82, w: 11, bottom: 80, r: 9, delay: 1.1 },
-  { src: "/hero/richlife-kiri-pani.webp", x: 31, w: 15, bottom: 70, r: -3, delay: 0.7 },
-  { src: "/products/richlife-cheddar-cheese.webp", x: 0, w: 22, bottom: 92, r: -6, delay: 0.4 },
-  { src: "/products/richlife-cheese-wedges.webp", x: 24, w: 17, bottom: 86, r: 3, delay: 0.9 },
-  { src: "/products/richlife-cheese-slices.webp", x: 43, w: 16, bottom: 96, r: 5, delay: 1.3 },
-  { src: "/products/richlife-cheese-wedges-pepper.webp", x: 58, w: 16, bottom: 84, r: -4, delay: 0.3 },
+  { src: "/hero/richlife-strawberry-milk.webp", x: 7, w: 11, bottom: 82, r: -7, delay: 0.2 },
+  { src: "/hero/richlife-full-cream-milk.webp", x: 18, w: 9, bottom: 90, r: -2, delay: 0 },
+  { src: "/hero/richlife-drinking-yoghurt.webp", x: 65, w: 7, bottom: 90, r: 4, delay: 0.8 },
+  { src: "/hero/richlife-chocolate-milk.webp", x: 73, w: 11, bottom: 86, r: 5, delay: 0.5 },
+  { src: "/hero/richlife-vanilla-milk.webp", x: 85, w: 11, bottom: 80, r: 9, delay: 1.1 },
+  { src: "/hero/richlife-kiri-pani.webp", x: 34, w: 15, bottom: 70, r: -3, delay: 0.7 },
+  { src: "/products/richlife-cheddar-cheese.webp", x: 3, w: 22, bottom: 92, r: -6, delay: 0.4 },
+  { src: "/products/richlife-cheese-wedges.webp", x: 27, w: 17, bottom: 86, r: 3, delay: 0.9 },
+  { src: "/products/richlife-cheese-slices.webp", x: 46, w: 16, bottom: 96, r: 5, delay: 1.3 },
+  { src: "/products/richlife-cheese-wedges-pepper.webp", x: 61, w: 16, bottom: 84, r: -4, delay: 0.3 },
 ]
 
 // Droplets splashing up from the milk surface.
