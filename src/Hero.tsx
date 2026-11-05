@@ -11,7 +11,7 @@ const heroProducts = [
   { src: "/hero/richlife-vanilla-milk.webp", x: 85, w: 11, bottom: 80, r: 9, delay: 1.1 },
   { src: "/hero/richlife-kiri-pani.webp", x: 34, w: 15, bottom: 70, r: -3, delay: 0.7 },
   { src: "/products/richlife-cheddar-cheese.webp", x: 3, w: 22, bottom: 92, r: -6, delay: 0.4 },
-  { src: "/products/richlife-cheese-wedges.webp", x: 27, w: 17, bottom: 86, r: 3, delay: 0.9 },
+  { src: "/products/richlife-cheese-wedges.png", x: 27, w: 17, bottom: 86, r: 3, delay: 0.9 },
   { src: "/products/richlife-cheese-slices.webp", x: 46, w: 16, bottom: 96, r: 5, delay: 1.3 },
   { src: "/products/richlife-cheese-wedges-pepper.webp", x: 61, w: 16, bottom: 84, r: -4, delay: 0.3 },
 ]

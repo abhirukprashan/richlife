@@ -29,7 +29,7 @@ const products: Product[] = [
     brand: "Rich Life",
     note: "8 portions · 120g",
     price: 560,
-    image: "/products/richlife-cheese-wedges.webp",
+    image: "/products/richlife-cheese-wedges.png",
     scale: 1.15,
   },
   {

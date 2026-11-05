@@ -13,7 +13,7 @@ const ideas = [
   {
     title: "Christmas cheese board",
     text: "Cube the cheddar, fan out the wedges and add crackers and woodapple jam. Done in ten minutes.",
-    image: "/ideas/cheese-board.webp",
+    image: "/ideas/cheese-board.jpg",
     productIds: [19, 1],
     tag: "Party",
   },
@@ -27,7 +27,7 @@ const ideas = [
   {
     title: "Grilled cheese toast",
     text: "Two slices between buttered bread, toasted until golden and stretchy. Perfect with evening tea.",
-    image: "/ideas/grilled-cheese.webp",
+    image: "/ideas/grilled-cheese.jpg",
     productIds: [18],
     tag: "Tea time",
   },
@@ -41,14 +41,14 @@ const ideas = [
   {
     title: "Creamy pasta bake",
     text: "Swiss cooking cheese melts smoothly over baked pasta, vegetables or a Christmas gratin.",
-    image: "/ideas/pasta-bake.webp",
+    image: "/ideas/pasta-bake.jpg",
     productIds: [3],
     tag: "Family dinner",
   },
   {
     title: "Cracker bites",
     text: "Spread on cream crackers, top with a pepper wedge slice and a drizzle of kithul treacle.",
-    image: "/ideas/crackers.webp",
+    image: "/ideas/crackers.jpg",
     productIds: [4, 21],
     tag: "Snack",
   },
