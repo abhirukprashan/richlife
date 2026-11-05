@@ -54,7 +54,11 @@ export default function Hero() {
       <div className="dairy-hero-inner">
         <div className="dairy-hero-copy">
           <h1 className="dairy-hero-title" id="hero-title">
-            <span className="hero-line">Share the Rich Life</span>
+            <span className="hero-line">
+              Share the{" "}
+              <br className="hero-break" />
+              Rich Life
+            </span>
           </h1>
           <p className="dairy-hero-text">
           Christmas is a table, and cheese is what fills it. Every Rich Life offer is a way to share.

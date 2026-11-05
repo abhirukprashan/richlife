@@ -1222,6 +1222,12 @@ html.is-ready .dairy-hero-text {
   display: block;
 }
 
+/* The hero headline is one line on desktop; phones break it deliberately into
+   "Share the" / "Rich Life" instead of leaving "Life" stranded on its own. */
+.hero-break {
+  display: none;
+}
+
 .dairy-hero-kicker {
   display: inline-block;
   margin-bottom: 14px;
@@ -1439,6 +1445,12 @@ html.is-ready .dairy-hero-text {
 
   .dairy-hero-milk {
     height: 165px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-break {
+    display: inline;
   }
 }
 
@@ -2173,25 +2185,34 @@ html.is-ready .dairy-hero-text {
     max-width: 1680px;
   }
 
+  .dairy-hero-inner {
+    padding-top: clamp(64px, 8.5svh, 150px);
+  }
+
   .dairy-hero-title {
-    font-size: clamp(6rem, 6.2vw, 9rem);
+    font-size: clamp(6.2rem, 6.7vw, 11rem);
   }
 
   .dairy-hero-copy {
-    max-width: clamp(1040px, 60vw, 1900px);
+    max-width: clamp(1040px, 62vw, 2000px);
   }
 
   .dairy-hero-text {
-    max-width: clamp(460px, 32vw, 720px);
-    font-size: clamp(17px, 1vw, 26px);
+    max-width: clamp(460px, 34vw, 760px);
+    font-size: clamp(17px, 1.05vw, 28px);
   }
 
   .dairy-hero-products {
-    height: clamp(280px, 25vw, 560px);
+    height: clamp(300px, 26vw, 600px);
+  }
+
+  .dairy-hero-cheese {
+    --s: 1.1;
+    --k: 0.82;
   }
 
   .dairy-hero-milk {
-    height: clamp(170px, 8.5vw, 260px);
+    height: clamp(175px, 9vw, 290px);
   }
 
   .ideas-intro {
@@ -2239,27 +2260,32 @@ html.is-ready .dairy-hero-text {
 
   .dairy-hero-inner {
     max-width: 1900px;
-    padding-top: clamp(120px, 12svh, 300px);
+    padding-top: clamp(96px, 9svh, 280px);
   }
 
   .dairy-hero-title {
-    font-size: clamp(7rem, 5vw, 10rem);
+    font-size: clamp(7rem, 6.7vw, 14rem);
   }
 
   .dairy-hero-copy {
-    max-width: clamp(1200px, 60vw, 1900px);
+    max-width: clamp(1200px, 62vw, 2100px);
   }
 
   .dairy-hero-text {
-    font-size: clamp(19px, 1.1vw, 34px);
+    font-size: clamp(19px, 1.15vw, 36px);
   }
 
   .dairy-hero-products {
-    height: clamp(430px, 27vw, 660px);
+    height: clamp(440px, 28vw, 720px);
+  }
+
+  .dairy-hero-cheese {
+    --s: 1.18;
+    --k: 0.75;
   }
 
   .dairy-hero-milk {
-    height: clamp(220px, 9.5vw, 360px);
+    height: clamp(230px, 10vw, 400px);
   }
 
   .ideas-head {
@@ -2316,6 +2342,11 @@ html.is-ready .dairy-hero-text {
   .page-shell,
   .dairy-hero-inner {
     max-width: 2260px;
+  }
+
+  .dairy-hero-cheese {
+    --s: 1.3;
+    --k: 0.72;
   }
 }
 
