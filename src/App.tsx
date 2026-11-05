@@ -214,7 +214,7 @@ function Icon({
   name,
   size = 20,
 }: {
-  name: "x" | "plus" | "minus" | "chat"
+  name: "x" | "plus" | "minus" | "chat" | "menu"
   size?: number
 }) {
   const paths = {
@@ -225,6 +225,7 @@ function Icon({
       </>
     ),
     x: <path d="m7 7 10 10M17 7 7 17" />,
+    menu: <path d="M4 7h16M4 12h16M4 17h16" />,
     plus: <path d="M12 5v14M5 12h14" />,
     minus: <path d="M5 12h14" />,
   }
@@ -301,6 +302,7 @@ export default function App() {
   )
   const boxProducts = boxItems.map((item) => item.product)
   const boxRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
   const dragRef = useRef<{
     uid: number
     offsetX: number
@@ -308,6 +310,7 @@ export default function App() {
   } | null>(null)
   const [draggingUid, setDraggingUid] = useState<number | null>(null)
   const [selectedUid, setSelectedUid] = useState<number | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // Dragging a product card into the box. Mouse drags start after a small
   // move; touch drags start after a short press so the row still scrolls.
@@ -365,6 +368,29 @@ export default function App() {
     useState<"idle" | "packing" | "sending">("idle")
   const [packingOrder, setPackingOrder] = useState<Order>({ products: [] })
   const boxTotal = boxProducts.reduce((sum, product) => sum + product.price, 0)
+
+  // The mobile menu closes on Escape or once the viewport can show the
+  // full desktop navigation.
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false)
+    }
+    const onResize = () => {
+      if (window.innerWidth >= 640) setMenuOpen(false)
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setMenuOpen(false)
+    }
+    window.addEventListener("keydown", onKeyDown)
+    window.addEventListener("resize", onResize)
+    document.addEventListener("pointerdown", onPointerDown)
+    return () => {
+      window.removeEventListener("keydown", onKeyDown)
+      window.removeEventListener("resize", onResize)
+      document.removeEventListener("pointerdown", onPointerDown)
+    }
+  }, [menuOpen])
 
   const orderOnWhatsApp = (order: Order = { products: boxProducts }) => {
     if (order.products.length === 0 || packingPhase !== "idle") return
@@ -683,7 +709,10 @@ export default function App() {
         #RichLifeChristmas ✦
       </div>
 
-      <header className="border-b border-[#0a1f8f]/10 bg-white/95 px-4 backdrop-blur sm:px-5">
+      <header
+        className="relative z-50 border-b border-[#0a1f8f]/10 bg-white/95 px-4 backdrop-blur sm:px-5"
+        ref={headerRef}
+      >
         <div className="mx-auto flex h-14 page-shell items-center justify-between gap-3 sm:h-16">
           <a className="group shrink-0" href="#" aria-label="Rich Life home">
             <img
@@ -697,7 +726,7 @@ export default function App() {
 
           <nav
             aria-label="Main"
-            className="no-scrollbar -mr-1 flex min-w-0 items-center gap-0.5 overflow-x-auto text-[11px] font-bold uppercase tracking-[0.08em] text-[#0a1f8f]/70 sm:gap-1 sm:text-xs"
+            className="no-scrollbar -mr-1 hidden min-w-0 items-center gap-0.5 overflow-x-auto text-[11px] font-bold uppercase tracking-[0.08em] text-[#0a1f8f]/70 sm:flex sm:gap-1 sm:text-xs"
           >
             <a
               className="hidden shrink-0 rounded-full px-2.5 py-2 transition hover:bg-[#0a1f8f]/5 hover:text-[#0a1f8f] sm:block sm:px-3"
@@ -724,7 +753,59 @@ export default function App() {
               Build a box
             </a>
           </nav>
+
+          <button
+            aria-controls="mobile-menu"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#0a1f8f]/15 bg-white text-[#0a1f8f] shadow-sm transition hover:bg-[#0a1f8f]/5 sm:hidden"
+            onClick={() => setMenuOpen((open) => !open)}
+            type="button"
+          >
+            <Icon name={menuOpen ? "x" : "menu"} size={20} />
+          </button>
         </div>
+
+        {menuOpen && (
+          <nav
+            aria-label="Mobile"
+            className="mobile-menu absolute inset-x-0 top-full border-b border-[#0a1f8f]/10 bg-white px-4 pb-4 pt-2 shadow-[0_18px_40px_rgba(10,31,143,0.16)] sm:hidden"
+            id="mobile-menu"
+          >
+            <a
+              className="flex items-center justify-between rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#0a1f8f] transition hover:bg-[#0a1f8f]/5"
+              href="#story"
+              onClick={() => setMenuOpen(false)}
+            >
+              Story
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              className="flex items-center justify-between rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#0a1f8f] transition hover:bg-[#0a1f8f]/5"
+              href="#ideas"
+              onClick={() => setMenuOpen(false)}
+            >
+              Ideas
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              className="flex items-center justify-between rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-[0.08em] text-[#0a1f8f] transition hover:bg-[#0a1f8f]/5"
+              href="#premade"
+              onClick={() => setMenuOpen(false)}
+            >
+              Gift boxes
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              className="mt-1 flex items-center justify-between rounded-xl bg-[#0a1f8f] px-4 py-3 text-xs font-bold uppercase tracking-[0.08em] text-white transition hover:bg-[#0a1f8f]/90"
+              href="#builder"
+              onClick={() => setMenuOpen(false)}
+            >
+              Build a box
+              <span aria-hidden="true">→</span>
+            </a>
+          </nav>
+        )}
       </header>
 
       <main>

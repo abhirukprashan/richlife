@@ -43,7 +43,7 @@ All colours are defined inline in Tailwind classes or `src/index.css`.
 | Milk | `#ffffff` → `#e6f1ff` | Milk waves, loader milk |
 | Cream | `#f7f2e8` | Page background |
 | Card | `#fffaf1` | Builder panel, product cards |
-| Gold | `#e8c15a` | Sparkles, seal ring, bulbs |
+| Gold | `#e8c15a` | Sparkles, bulbs |
 | Pine | `#1d5c45` | Top-bar and footer stripes, bulbs |
 | WhatsApp green | `#1fa855` (hover `#178f47`) | Order buttons only |
 
@@ -92,9 +92,9 @@ the screen lifts away with a wavy milk edge.
 - Rich Life products stand in rolling milk: milk cartons and flavoured milks at
   the back, Kiri Pani in the middle, cheeses in front. Each item is **partly
   submerged** — its lower part sits under the front wave, never fully hidden.
-  Positions live in `heroProducts` in `src/Hero.tsx` (`bottom` in px; phones
-  scale it by 0.9).
-- "100% Sri Lankan milk" seal (our own design, not Rich Life's mark).
+  Positions live in `heroProducts` in `src/Hero.tsx` (`bottom` in px). Phones
+  scale the whole cluster up by `1.5`, hide `mobileHidden` items, and can move
+  an item with `mobileX`.
 
 ### Builder
 - The box is a photo of an open wooden box of paper shred on pine.

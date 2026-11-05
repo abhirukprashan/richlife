@@ -3,15 +3,28 @@ import type { CSSProperties } from "react"
 // The Rich Life range standing in the milk: milk cartons at the back,
 // cheeses in front (later items overlap earlier ones). `bottom` is in px
 // above the hero's lower edge, so each item sits partly under the milk.
-const heroProducts = [
+// `mobileHidden` trims the busiest items from the tighter phone composition.
+type HeroProduct = {
+  src: string
+  x: number
+  w: number
+  bottom: number
+  r: number
+  delay: number
+  mobileHidden?: boolean
+  /** Overrides `x` on phones so an item can sit on the other side. */
+  mobileX?: number
+}
+
+const heroProducts: HeroProduct[] = [
   { src: "/hero/richlife-strawberry-milk.webp", x: 7, w: 11, bottom: 82, r: -7, delay: 0.2 },
-  { src: "/hero/richlife-full-cream-milk.webp", x: 18, w: 9, bottom: 90, r: -2, delay: 0 },
-  { src: "/hero/richlife-drinking-yoghurt.webp", x: 65, w: 7, bottom: 90, r: 4, delay: 0.8 },
-  { src: "/hero/richlife-chocolate-milk.webp", x: 73, w: 11, bottom: 86, r: 5, delay: 0.5 },
-  { src: "/hero/richlife-vanilla-milk.webp", x: 85, w: 11, bottom: 80, r: 9, delay: 1.1 },
+  { src: "/hero/richlife-full-cream-milk.webp", x: 18, w: 9, bottom: 90, r: -2, delay: 0, mobileX: 82 },
+  { src: "/hero/richlife-drinking-yoghurt.webp", x: 65, w: 7, bottom: 90, r: 4, delay: 0.8, mobileHidden: true },
+  { src: "/hero/richlife-chocolate-milk.webp", x: 73, w: 11, bottom: 86, r: 5, delay: 0.5, mobileHidden: true },
+  { src: "/hero/richlife-vanilla-milk.webp", x: 85, w: 11, bottom: 80, r: 9, delay: 1.1, mobileHidden: true },
   { src: "/hero/richlife-kiri-pani.webp", x: 34, w: 15, bottom: 70, r: -3, delay: 0.7 },
-  { src: "/products/richlife-cheddar-cheese.webp", x: 3, w: 22, bottom: 92, r: -6, delay: 0.4 },
-  { src: "/products/richlife-cheese-wedges.png", x: 27, w: 17, bottom: 86, r: 3, delay: 0.9 },
+  { src: "/products/richlife-cheddar-cheese.webp", x: 3, w: 22, bottom: 92, r: -6, delay: 0.4, mobileHidden: true },
+  { src: "/products/richlife-cheese-wedges.png", x: 27, w: 17, bottom: 86, r: 3, delay: 0.9, mobileHidden: true },
   { src: "/products/richlife-cheese-slices.webp", x: 46, w: 16, bottom: 96, r: 5, delay: 1.3 },
   { src: "/products/richlife-cheese-wedges-pepper.webp", x: 61, w: 16, bottom: 84, r: -4, delay: 0.3 },
 ]
@@ -52,15 +65,18 @@ export default function Hero() {
           {heroProducts.map((product, index) => (
             <img
               alt=""
-              className="dairy-hero-cheese"
+              className={`dairy-hero-cheese${
+                product.mobileHidden ? " is-mobile-hidden" : ""
+              }`}
               decoding="async"
               key={product.src}
               src={product.src}
               style={
                 {
-                  left: `${product.x}%`,
-                  width: `${product.w}%`,
                   zIndex: index,
+                  "--x": product.x,
+                  "--mx": product.mobileX ?? product.x,
+                  "--w": product.w,
                   "--bottom": product.bottom,
                   "--r": `${product.r}deg`,
                   "--delay": `${product.delay}s`,
@@ -68,11 +84,6 @@ export default function Hero() {
               }
             />
           ))}
-          <div className="dairy-hero-seal">
-            <span className="dairy-hero-seal-top">100%</span>
-            <span className="dairy-hero-seal-main">Sri Lankan</span>
-            <span className="dairy-hero-seal-bottom">milk</span>
-          </div>
         </div>
       </div>
 

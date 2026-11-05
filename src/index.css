@@ -36,6 +36,18 @@
   background-size: 34px 100%;
 }
 
+/* Phone navigation drops below the header. */
+.mobile-menu {
+  animation: mobile-menu-in 180ms ease-out both;
+}
+
+@keyframes mobile-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
 /* Builder section: same pale blue-white as the story timeline. */
 .festive-hero {
   background:
@@ -1286,8 +1298,16 @@ html.is-ready .dairy-hero-text {
 
 .dairy-hero-cheese {
   --k: 1;
+  --s: 1;
   position: absolute;
+  /* Keep each cut-out centred on its original column while it scales. */
+  left: clamp(
+    0px,
+    calc((var(--x) + var(--w) / 2) * 1% - var(--w) * var(--s) * 0.5%),
+    calc(100% - var(--w) * var(--s) * 1%)
+  );
   bottom: calc(var(--bottom) * var(--k) * 1px);
+  width: calc(var(--w) * var(--s) * 1%);
   height: auto;
   filter: drop-shadow(0 18px 18px rgb(5 16 60 / 0.35));
   transform: rotate(var(--r));
@@ -1311,55 +1331,6 @@ html.is-ready .dairy-hero-text {
   }
   50% {
     transform: rotate(calc(var(--r) * -0.5)) translateY(-10px);
-  }
-}
-
-.dairy-hero-seal {
-  position: absolute;
-  z-index: 20;
-  top: 4%;
-  right: 4%;
-  display: grid;
-  width: clamp(92px, 11vw, 132px);
-  aspect-ratio: 1;
-  place-content: center;
-  border: 4px solid #e8c15a;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #2f6fd6, #0b1f8f 75%);
-  box-shadow:
-    0 0 0 4px rgb(255 255 255 / 0.85),
-    0 14px 30px rgb(5 16 60 / 0.4);
-  text-align: center;
-  animation: hero-seal 14s linear infinite;
-}
-
-.dairy-hero-seal span {
-  display: block;
-  line-height: 1.05;
-}
-
-.dairy-hero-seal-top,
-.dairy-hero-seal-bottom {
-  color: #e8c15a;
-  font-size: clamp(10px, 1vw, 12px);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.dairy-hero-seal-main {
-  margin: 2px 0;
-  font-family: var(--font-display);
-  font-size: clamp(15px, 1.6vw, 20px);
-}
-
-@keyframes hero-seal {
-  0%,
-  100% {
-    transform: rotate(-8deg);
-  }
-  50% {
-    transform: rotate(8deg);
   }
 }
 
@@ -1428,17 +1399,46 @@ html.is-ready .dairy-hero-text {
 }
 
 @media (max-width: 899px) {
+  .dairy-hero-inner {
+    padding: clamp(40px, 7svh, 60px) 18px 0;
+  }
+
+  .dairy-hero-cheese.is-mobile-hidden {
+    display: none;
+  }
+
+  .dairy-hero-title {
+    font-size: clamp(3.1rem, 12vw, 5rem);
+    line-height: 0.9;
+    text-wrap: balance;
+  }
+
+  .dairy-hero-text {
+    max-width: 36ch;
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
   .dairy-hero-products {
-    height: clamp(190px, 40vw, 240px);
+    height: clamp(280px, 38svh, 360px);
   }
 
+  /* Phones get one scaled-up cluster instead of a miniature desktop row:
+     each cut-out grows with the viewport height, so tall screens fill too. */
   .dairy-hero-cheese {
-    --k: 0.9;
+    --u: clamp(9px, calc(3.8svh - 17px), 13px);
+    --k: 1.5;
+    width: calc(var(--w) * var(--u));
+    left: clamp(
+      0px,
+      calc((var(--mx) + var(--w) / 2) * 1% - var(--w) * var(--u) / 2),
+      calc(100% - var(--w) * var(--u))
+    );
   }
-
 
   .dairy-hero-milk {
-    height: 115px;
+    height: 165px;
   }
 }
 
@@ -1446,7 +1446,6 @@ html.is-ready .dairy-hero-text {
   .dairy-hero-glow,
   .dairy-hero-wave svg,
   .dairy-hero-drop,
-  .dairy-hero-seal,
   .dairy-hero-cheese {
     animation: none;
   }
@@ -2074,6 +2073,48 @@ html.is-ready .dairy-hero-text {
 .idea-add:hover {
   background: #2a5bc0;
   transform: translateY(-1px);
+}
+
+/* Phones: slightly smaller cards so the full card (and a peek of the next)
+   fits comfortably without the copy feeling cramped. */
+@media (max-width: 640px) {
+  .ideas-grid {
+    gap: 14px;
+    padding: 4px 16px 18px;
+    scroll-padding-left: 16px;
+  }
+
+  .idea-card {
+    flex: 0 0 min(72vw, 300px);
+    padding: 12px 12px 16px;
+    border-radius: 22px;
+  }
+
+  .idea-stage {
+    border-radius: 16px;
+  }
+
+  .idea-title {
+    margin-top: 12px;
+    font-size: 20px;
+  }
+
+  .idea-text {
+    margin-top: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .idea-uses {
+    margin-top: 10px;
+    font-size: 11px;
+  }
+
+  .idea-add {
+    margin-top: 12px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
 }
 
 
